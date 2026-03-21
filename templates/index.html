@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Retkipolkusovellus</title>
+</head>
+
+<body>
+  <h1>Tervetuloa retkipolkusovellukseen!</h1>
+  {% if session.username %}
+  <p>
+    Olet kirjautunut nimellä {{ session.username }}
+  </p>
+  <p>
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+  {% else %}
+  <p>  
+    <a href="/login">Kirjaudu sisään</a> tai 
+    <a href="/register">rekisteröidy</a>.
+  </p>  
+  {% endif %}
+</body>
+
+</html>

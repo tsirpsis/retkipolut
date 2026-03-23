@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
 import sqlite3
+from datetime import date
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -42,11 +43,17 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = "SELECT password_hash FROM users WHERE username = ?"
-        password_hash = db.query(sql, [username])[0][0]
+        sql = "SELECT id, password_hash FROM users WHERE username = ?"
+        result = db.query(sql, [username])
+        if len(result) == 0:
+            return "VIRHE: väärä tunnus tai salasana"
+
+        user_id = result[0][0]
+        password_hash = result[0][1]
 
         if check_password_hash(password_hash, password):
             session["username"] = username
+            session["user_id"] = user_id
             return redirect("/")
         else:
             return "VIRHE: väärä tunnus tai salasana"
@@ -54,4 +61,21 @@ def login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["user_id"]
     return redirect("/")
+
+@app.route("/new_destination")
+def new_destination():
+    return render_template("new_destination.html")
+
+@app.route("/create_destination", methods=["POST"])
+def create_destination():
+        title = request.form["title"]
+        content = request.form["description"]
+        creation_time = date.today()
+        user_id = session["user_id"]
+
+        sql = "INSERT INTO destinations (title, content, creation_time, user_id) VALUES (?, ?, ?, ?)"
+        db.execute(sql, [title, content, creation_time, user_id])
+
+        return redirect("/")

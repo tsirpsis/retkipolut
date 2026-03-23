@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi retkikohde</title>
+</head>
+
+<body>
+  <h1>Lisää uusi retkikohde</h1>
+  <form action="/create_destination" method="post">
+    <p>
+      Retkikohteen nimi: <br />
+      <input type="text" name="title"/>
+    </p>
+    <p>
+      Kohteen kuvaus: <br />
+      <textarea name="description" rows="5" cols="60"></textarea>
+    </p>
+    <input type="submit" value="Tallenna" />
+  </form>
+</body>
+
+</html>

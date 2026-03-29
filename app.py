@@ -100,3 +100,16 @@ def update_destination():
         destinations.update_destination(destination_id, title, content)
 
         return redirect("/destination/" + str(destination_id))
+
+@app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])
+def remove_destination(destination_id):
+    if request.method == "GET":
+        destination = destinations.get_destination(destination_id)
+        return render_template("remove_destination.html", destination=destination)
+
+    if request.method == "POST":
+        if "remove" in request.form:
+            destinations.remove_destination(destination_id)
+            return redirect("/")
+        else:
+            return redirect("/destination/" + str(destination_id))

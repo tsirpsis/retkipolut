@@ -26,3 +26,8 @@ def update_destination(destination_id, title, content):
                     content = ?
                 WHERE id = ?"""
         db.execute(sql, [title, content, destination_id])
+
+def remove_destination(destination_id):
+        sql="""DELETE FROM destinations WHERE id = ?"""
+        db.execute(sql, [destination_id])
+

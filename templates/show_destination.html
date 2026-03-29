@@ -8,15 +8,18 @@
 
 <body>
   <h1>{{ destination.title }}</h1>
+  <p>Lisätty {{ destination.creation_time }} </p>
+  <h3>Kuvaus kohteesta:</h3>
+  <p>{{ destination.content }}</p>
+
+
   {% if session.user_id == destination.user_id %}
   <p>
     <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
+    <a href="/remove_destination/{{ destination.id }}">Poista</a>
   </p>
   {% endif %}
-  <h3>Kuvaus kohteesta:</h3>
-  <p>
-    {{ destination.content }}
-  </p>
+
   <p>
     <a href="/">Palaa pääsivulle</a>
   </p>

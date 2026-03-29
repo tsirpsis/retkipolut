@@ -80,3 +80,8 @@ def create_destination():
         destinations.add_destination(title, content, creation_time, user_id)
 
         return redirect("/")
+
+@app.route("/destination/<int:destination_id>")
+def show_destination(destination_id):
+    destination = destinations.get_destination(destination_id)
+    return render_template("show_destination.html", destination=destination)

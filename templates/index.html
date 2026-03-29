@@ -12,19 +12,29 @@
   <p>
     Olet kirjautunut nimellä {{ session.username }} ja identillä {{ session.user_id }}.
   </p>
+
   <p>
     <a href="/logout">Kirjaudu ulos</a>
   </p>
+
   <h2>Uusi retkikohde</h2>
   <p>
     <a href="/new_destination">Lisää uusi retkikohde</a> 
   </p>
+
   {% else %}
   <p>  
     <a href="/login">Kirjaudu sisään</a> tai 
     <a href="/register">rekisteröidy</a> jotta voit lisätä uuden retkikohteen tai kommentin.
   </p>  
   {% endif %}
+
+  <h2>Retkikohteet</h2>
+  <ul>
+    {% for destination in destinations %}
+    <li><a href="/destination/{{ destination.id }}">{{ destination.title }}</a></li>
+    {% endfor %}
+  </ul>
 
 </body>
 

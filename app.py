@@ -5,13 +5,15 @@ import db
 import config
 import sqlite3
 from datetime import date
+import destinations
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    all_destinations = destinations.get_destinations()
+    return render_template("index.html", destinations=all_destinations)
 
 @app.route("/register")
 def register():
@@ -75,7 +77,6 @@ def create_destination():
         creation_time = date.today()
         user_id = session["user_id"]
 
-        sql = "INSERT INTO destinations (title, content, creation_time, user_id) VALUES (?, ?, ?, ?)"
-        db.execute(sql, [title, content, creation_time, user_id])
+        destinations.add_destination(title, content, creation_time, user_id)
 
         return redirect("/")

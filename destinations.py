@@ -9,11 +9,20 @@ def get_destinations():
         return db.query(sql)
 
 def get_destination(destination_id):
-        sql = """SELECT destinations.title,
+        sql = """SELECT destinations.id,
+                        destinations.title,
                         destinations.content,
                         destinations.creation_time,
+                        users.id AS user_id,
                         users.username
                 FROM destinations, users
                 WHERE destinations.user_id = users.id AND
                       destinations.id = ?"""
         return db.query(sql, [destination_id])[0]
+
+def update_destination(destination_id, title, content):
+        sql="""UPDATE destinations 
+                SET title = ?,
+                    content = ?
+                WHERE id = ?"""
+        db.execute(sql, [title, content, destination_id])

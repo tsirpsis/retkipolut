@@ -85,3 +85,18 @@ def create_destination():
 def show_destination(destination_id):
     destination = destinations.get_destination(destination_id)
     return render_template("show_destination.html", destination=destination)
+
+@app.route("/edit_destination/<int:destination_id>")
+def edit_destination(destination_id):
+    destination = destinations.get_destination(destination_id)
+    return render_template("edit_destination.html", destination=destination)
+
+@app.route("/update_destination", methods=["POST"])
+def update_destination():
+        destination_id = request.form["destination_id"]
+        title = request.form["title"]
+        content = request.form["description"]
+
+        destinations.update_destination(destination_id, title, content)
+
+        return redirect("/destination/" + str(destination_id))

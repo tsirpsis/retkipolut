@@ -8,6 +8,11 @@
 
 <body>
   <h1>{{ destination.title }}</h1>
+  {% if session.user_id == destination.user_id %}
+  <p>
+    <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
+  </p>
+  {% endif %}
   <h3>Kuvaus kohteesta:</h3>
   <p>
     {{ destination.content }}

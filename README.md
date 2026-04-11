@@ -1,5 +1,6 @@
 # Retkipolut
 
+## Sovelluksen kuvaus
 Sovelluksen tarkoituksena on jakaa vinkkejä ja kokemuksia Suomen
 retkikohteista ja luontopoluista sekä niiden palveluista.
 Valmiissa sovelluksessa tulevat olemaan nämä toiminnot:
@@ -14,3 +15,8 @@ Valmiissa sovelluksessa tulevat olemaan nämä toiminnot:
 *	Käyttäjä voi kommentoida retkikohdetta.
 
 Pääasiallinen tietokohde on retkikohde ja toissijainen on sen kommentti.
+
+## Ohjeet sovelluksen testaamiseen
+* Kloonaa tämä repositorio.
+* Luo tietokanta database.db skeemasta schema.sql komennolla sqlite3 database.db < schema.sql.
+* Käynnistä sovellus komennolla flask run.

@@ -72,14 +72,14 @@ def new_destination():
 
 @app.route("/create_destination", methods=["POST"])
 def create_destination():
-        title = request.form["title"]
-        content = request.form["description"]
-        creation_time = date.today()
-        user_id = session["user_id"]
+    title = request.form["title"]
+    content = request.form["description"]
+    creation_time = date.today()
+    user_id = session["user_id"]
 
-        destinations.add_destination(title, content, creation_time, user_id)
+    destinations.add_destination(title, content, creation_time, user_id)
 
-        return redirect("/")
+    return redirect("/")
 
 @app.route("/destination/<int:destination_id>")
 def show_destination(destination_id):
@@ -93,13 +93,13 @@ def edit_destination(destination_id):
 
 @app.route("/update_destination", methods=["POST"])
 def update_destination():
-        destination_id = request.form["destination_id"]
-        title = request.form["title"]
-        content = request.form["description"]
+    destination_id = request.form["destination_id"]
+    title = request.form["title"]
+    content = request.form["description"]
 
-        destinations.update_destination(destination_id, title, content)
+    destinations.update_destination(destination_id, title, content)
 
-        return redirect("/destination/" + str(destination_id))
+    return redirect("/destination/" + str(destination_id))
 
 @app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])
 def remove_destination(destination_id):
@@ -113,3 +113,14 @@ def remove_destination(destination_id):
             return redirect("/")
         else:
             return redirect("/destination/" + str(destination_id))
+
+@app.route("/find_destination")
+def find_destination():
+    query = request.args.get("query")
+    if query:
+        results = destinations.find_destinations(query)
+    else:
+        query = ""
+        results = []
+    print("Results:", results)
+    return render_template("find_destination.html", query=query, results=results)

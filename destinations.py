@@ -21,7 +21,7 @@ def get_destination(destination_id):
         return db.query(sql, [destination_id])[0]
 
 def update_destination(destination_id, title, content):
-        sql="""UPDATE destinations 
+        sql="""UPDATE destinations
                 SET title = ?,
                     content = ?
                 WHERE id = ?"""
@@ -31,3 +31,9 @@ def remove_destination(destination_id):
         sql="""DELETE FROM destinations WHERE id = ?"""
         db.execute(sql, [destination_id])
 
+def find_destinations(query):
+        sql="""SELECT id, title
+                FROM destinations
+                WHERE title LIKE ? OR content LIKE ?
+                ORDER BY id DESC"""
+        return db.query(sql, ["%" + query + "%", "%" + query + "%"])

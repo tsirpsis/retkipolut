@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Etsi retkikohde</title>
+</head>
+
+<body>
+  <h1>Etsi retkikohde</h1>
+  <form action="/find_destination" method="get">
+    <p>
+      Hakusana: <input type="text" name="query" value="{{ query }}">
+    </p>    
+    <input type="submit" value="Lähetä">
+  </form>
+
+  <p>
+    <a href="/">Palaa pääsivulle</a>
+  </p>
+
+  {% if query %}
+    <hr />
+    <h2>Hakutulokset</h2>
+    <ul>
+      {% for destination in results %}
+        <li>
+          <a href="/destination/{{ destination.id }}">
+            {{ destination.title }}
+          </a>
+          <br />
+        </li>
+      {% endfor %}
+    </ul>
+    {% if results|length == 0 %}
+      <p>Hakusanalla ei löytynyt kohteita.</p>  
+    {% endif %}
+  {% endif %}
+</body>
+
+</html>

@@ -6,6 +6,7 @@ import config
 import sqlite3
 from datetime import date
 import destinations
+import errors
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -89,11 +90,18 @@ def show_destination(destination_id):
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):
     destination = destinations.get_destination(destination_id)
+    if destination["user_id"] != session["user_id"]:
+        errors.forbidden()
+
     return render_template("edit_destination.html", destination=destination)
 
 @app.route("/update_destination", methods=["POST"])
 def update_destination():
     destination_id = request.form["destination_id"]
+    destination = destinations.get_destination(destination_id)
+    if destination["user_id"] != session["user_id"]:
+        errors.forbidden()
+
     title = request.form["title"]
     content = request.form["description"]
 
@@ -103,8 +111,11 @@ def update_destination():
 
 @app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])
 def remove_destination(destination_id):
+    destination = destinations.get_destination(destination_id)
+    if destination["user_id"] != session["user_id"]:
+        errors.forbidden()
+
     if request.method == "GET":
-        destination = destinations.get_destination(destination_id)
         return render_template("remove_destination.html", destination=destination)
 
     if request.method == "POST":

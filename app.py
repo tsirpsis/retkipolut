@@ -1,7 +1,5 @@
 from datetime import date
 from flask import Flask, redirect, render_template, request, session, flash
-from werkzeug.security import check_password_hash
-import db
 import config
 import destinations
 import errors
@@ -35,11 +33,15 @@ def create():
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 
+    if not validations.check_registration(username, password1):
+        flash("Käyttäjätunnus tai salasana on liian lyhyt.")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
+
     if users.create_user(username, password1):
         flash("Tunnus luotu onnistuneesti! Kirjaudu vielä sisään.")
         return redirect("/login")
-    else:
-        flash("VIRHE: Käyttäjätunnus on jo varattu. Valitse toinen tunnus.")
+    flash("VIRHE: Käyttäjätunnus on jo varattu. Valitse toinen tunnus.")
     return redirect("/register")
 
 @app.route("/login", methods=["GET","POST"])
@@ -51,20 +53,13 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = "SELECT id, password_hash FROM users WHERE username = ?"
-        result = db.query(sql, [username])
-        if len(result) == 0:
-            return "VIRHE: väärä tunnus tai salasana"
-
-        user_id = result[0][0]
-        password_hash = result[0][1]
-
-        if check_password_hash(password_hash, password):
+        user_id = users.check_login(username, password)
+        if user_id:
             session["username"] = username
             session["user_id"] = user_id
             return redirect("/")
-        else:
-            return "VIRHE: väärä tunnus tai salasana"
+        flash("VIRHE: Väärä käyttäjätunnus tai salasana.")
+        return redirect("/login")
 
 @app.route("/logout")
 def logout():
@@ -147,8 +142,7 @@ def remove_destination(destination_id):
         if "remove" in request.form:
             destinations.remove_destination(destination_id)
             return redirect("/")
-        else:
-            return redirect("/destination/" + str(destination_id))
+        return redirect("/destination/" + str(destination_id))
 
 @app.route("/find_destination")
 def find_destination():

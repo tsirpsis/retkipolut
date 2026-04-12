@@ -7,6 +7,7 @@
 </head>
 
 <body>
+  <h2>Kirjautuminen</h2>
   {% for message in get_flashed_messages() %}
     <p>
       <b>{{ message }}</b>
@@ -15,13 +16,13 @@
 
   {% if session.username %}
   <p>
-    Olet kirjautunut nimellä {{ session.username }}
+    Olet kirjautunut sisään käyttäjätunnuksella <strong>{{ session.username }}</strong>.
   </p>
   <p>
     <a href="/logout">Kirjaudu ulos</a>
   </p>
+
   {% else %}
-  <p><strong>Anna tunnus ja salasana</strong></p>
   <form action="/login" method="post">
     <p>
       Tunnus: <br />

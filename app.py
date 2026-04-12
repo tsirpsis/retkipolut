@@ -6,6 +6,7 @@ import db
 import config
 import destinations
 import errors
+import validations
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -84,6 +85,9 @@ def create_destination():
     creation_time = date.today()
     user_id = session["user_id"]
 
+    if not validations.check_destination(title, content):
+        errors.forbidden()
+
     destinations.add_destination(title, content, creation_time, user_id)
 
     return redirect("/")
@@ -118,6 +122,9 @@ def update_destination():
 
     title = request.form["title"]
     content = request.form["description"]
+
+    if not validations.check_destination(title, content):
+        errors.forbidden()
 
     destinations.update_destination(destination_id, title, content)
 

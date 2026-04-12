@@ -29,8 +29,7 @@ def update_destination(destination_id, title, content):
 
 def remove_destination(destination_id):
     sql = """DELETE FROM destinations WHERE id = ?"""
-    result = db.query(sql, [destination_id])
-    return result[0] if result else None
+    db.execute(sql, [destination_id])
 
 def find_destinations(query):
     sql = """SELECT id, title

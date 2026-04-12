@@ -8,10 +8,17 @@
 
 <body>
   <form action="/create" method="post">
-    <p><strong>Luo uusi tunnus</strong></p>
+    <h2>Luo uusi tunnus</h2>
+
+    {% for message in get_flashed_messages() %}
+      <p>
+        <b>{{ message }}</b>
+      </p>
+    {% endfor %}
+
     <p>
       Tunnus: <br />
-      <input type="text" name="username" />
+      <input type="text" name="username" value="{{ filled.username }}"/>
     </p>
     <p>
       Salasana: <br />
@@ -23,6 +30,7 @@
     </p>
     <input type="submit" value="Luo tunnus" />
   </form>
+
 </body>
 
 </html>

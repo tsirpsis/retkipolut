@@ -1,12 +1,12 @@
-import sqlite3
 from datetime import date
-from flask import Flask, redirect, render_template, request, session
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, redirect, render_template, request, session, flash
+from werkzeug.security import check_password_hash
 import db
 import config
 import destinations
 import errors
 import validations
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -22,24 +22,25 @@ def index():
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    return render_template("register.html", filled={})
 
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
-    password_hash = generate_password_hash(password1)
+        flash("VIRHE: Antamasi salasanat eivät ole samat.")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
-    try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
-    except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
-
-    return "Tunnus luotu"
+    if users.create_user(username, password1):
+        flash("Tunnus luotu onnistuneesti! Kirjaudu vielä sisään.")
+        return redirect("/login")
+    else:
+        flash("VIRHE: Käyttäjätunnus on jo varattu. Valitse toinen tunnus.")
+    return redirect("/register")
 
 @app.route("/login", methods=["GET","POST"])
 def login():

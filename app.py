@@ -1,15 +1,18 @@
-from flask import Flask
-from flask import redirect, render_template, request, session
+import sqlite3
+from datetime import date
+from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
-import sqlite3
-from datetime import date
 import destinations
 import errors
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+
+def require_login():
+    if "user_id" not in session:
+        errors.forbidden()
 
 @app.route("/")
 def index():
@@ -63,16 +66,19 @@ def login():
 
 @app.route("/logout")
 def logout():
+    require_login()
     del session["username"]
     del session["user_id"]
     return redirect("/")
 
 @app.route("/new_destination")
 def new_destination():
+    require_login()
     return render_template("new_destination.html")
 
 @app.route("/create_destination", methods=["POST"])
 def create_destination():
+    require_login()
     title = request.form["title"]
     content = request.form["description"]
     creation_time = date.today()
@@ -85,11 +91,16 @@ def create_destination():
 @app.route("/destination/<int:destination_id>")
 def show_destination(destination_id):
     destination = destinations.get_destination(destination_id)
+    if not destination:
+        errors.not_found()
     return render_template("show_destination.html", destination=destination)
 
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):
+    require_login()
     destination = destinations.get_destination(destination_id)
+    if not destination:
+        errors.not_found()
     if destination["user_id"] != session["user_id"]:
         errors.forbidden()
 
@@ -97,8 +108,11 @@ def edit_destination(destination_id):
 
 @app.route("/update_destination", methods=["POST"])
 def update_destination():
+    require_login()
     destination_id = request.form["destination_id"]
     destination = destinations.get_destination(destination_id)
+    if not destination:
+        errors.not_found()
     if destination["user_id"] != session["user_id"]:
         errors.forbidden()
 
@@ -111,7 +125,10 @@ def update_destination():
 
 @app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])
 def remove_destination(destination_id):
+    require_login()
     destination = destinations.get_destination(destination_id)
+    if not destination:
+        errors.not_found()
     if destination["user_id"] != session["user_id"]:
         errors.forbidden()
 
@@ -133,5 +150,4 @@ def find_destination():
     else:
         query = ""
         results = []
-    print("Results:", results)
     return render_template("find_destination.html", query=query, results=results)

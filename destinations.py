@@ -1,39 +1,40 @@
 import db
 
 def add_destination(title, content, creation_time, user_id):
-        sql = "INSERT INTO destinations (title, content, creation_time, user_id) VALUES (?, ?, ?, ?)"
-        db.execute(sql, [title, content, creation_time, user_id])
+    sql = "INSERT INTO destinations (title, content, creation_time, user_id) VALUES (?, ?, ?, ?)"
+    db.execute(sql, [title, content, creation_time, user_id])
 
 def get_destinations():
-        sql = "SELECT id, title FROM destinations ORDER BY title"
-        return db.query(sql)
+    sql = "SELECT id, title FROM destinations ORDER BY title"
+    return db.query(sql)
 
 def get_destination(destination_id):
-        sql = """SELECT destinations.id,
-                        destinations.title,
-                        destinations.content,
-                        destinations.creation_time,
-                        users.id AS user_id,
-                        users.username
+    sql = """SELECT destinations.id,
+                destinations.title,
+                destinations.content,
+                destinations.creation_time,
+                users.id AS user_id,
+                users.username
                 FROM destinations, users
                 WHERE destinations.user_id = users.id AND
                       destinations.id = ?"""
-        return db.query(sql, [destination_id])[0]
+    result = db.query(sql, [destination_id])
+    return result[0] if result else None
 
 def update_destination(destination_id, title, content):
-        sql="""UPDATE destinations
-                SET title = ?,
-                    content = ?
+    sql = """UPDATE destinations
+                SET title = ?, content = ?
                 WHERE id = ?"""
-        db.execute(sql, [title, content, destination_id])
+    db.execute(sql, [title, content, destination_id])
 
 def remove_destination(destination_id):
-        sql="""DELETE FROM destinations WHERE id = ?"""
-        db.execute(sql, [destination_id])
+    sql = """DELETE FROM destinations WHERE id = ?"""
+    result = db.query(sql, [destination_id])
+    return result[0] if result else None
 
 def find_destinations(query):
-        sql="""SELECT id, title
+    sql = """SELECT id, title
                 FROM destinations
                 WHERE title LIKE ? OR content LIKE ?
                 ORDER BY id DESC"""
-        return db.query(sql, ["%" + query + "%", "%" + query + "%"])
+    return db.query(sql, ["%" + query + "%", "%" + query + "%"])

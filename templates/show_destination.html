@@ -7,22 +7,29 @@
 </head>
 
 <body>
-  <h1>{{ destination.title }}</h1>
-  <p>Lisätty {{ destination.creation_time }} </p>
-  <h3>Kuvaus kohteesta:</h3>
+  <h2>{{ destination.title }}</h2>
+  <p>Lisätty {{ destination.creation_time }}</p>
+  <h3>Kuvaus kohteesta</h3>
   <p>{{ destination.content }}</p>
 
-
   {% if session.user_id == destination.user_id %}
-  <p>
-    <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
-    <a href="/remove_destination/{{ destination.id }}">Poista</a>
-  </p>
+    <p>
+      <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
+      <a href="/remove_destination/{{ destination.id }}">Poista</a>
+    </p>
+  {% endif %}
+
+  {% if not session.user_id %}
+    <p>
+      <a href="/login">Kirjaudu sisään</a><br />
+      <a href="/register">Luo uusi tunnus</a>
+    </p>
   {% endif %}
 
   <p>
-    <a href="/">Palaa pääsivulle</a>
+    <a href="/">Palaa etusivulle</a>
   </p>
+
 </body>
 
 </html>

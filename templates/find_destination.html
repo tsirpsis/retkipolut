@@ -7,21 +7,21 @@
 </head>
 
 <body>
-  <h1>Etsi retkikohde</h1>
+  <h2>Etsi retkikohdetta</h2>
   <form action="/find_destination" method="get">
     <p>
-      Hakusana: <input type="text" name="query" value="{{ query }}">
-    </p>    
-    <input type="submit" value="Lähetä">
+      Hakusana: <input type="text" name="query" value="{{ query }}"> 
+      <input type="submit" value="Etsi">
+    </p>
   </form>
 
   <p>
-    <a href="/">Palaa pääsivulle</a>
+    <a href="/">Palaa etusivulle</a>
   </p>
 
   {% if query %}
     <hr />
-    <h2>Hakutulokset</h2>
+    <h3>Hakutulokset</h3>
     <ul>
       {% for destination in results %}
         <li>

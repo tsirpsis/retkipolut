@@ -47,19 +47,25 @@ def create():
 @app.route("/login", methods=["GET","POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", filled={}, next_page=request.referrer)
 
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        next_page = request.form["next_page"]
 
         user_id = users.check_login(username, password)
         if user_id:
             session["username"] = username
             session["user_id"] = user_id
-            return redirect("/")
+
+            if "register" in next_page:
+                return redirect("/")
+            return redirect(next_page)
+
         flash("VIRHE: Väärä käyttäjätunnus tai salasana.")
-        return redirect("/login")
+        filled = {"username": username}
+        return render_template("login.html", filled=filled,  next_page=next_page)
 
 @app.route("/logout")
 def logout():

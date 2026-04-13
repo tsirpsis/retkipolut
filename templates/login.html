@@ -15,26 +15,40 @@
   {% endfor %}
 
   {% if session.username %}
-  <p>
-    Olet kirjautunut sisään käyttäjätunnuksella <strong>{{ session.username }}</strong>.
-  </p>
-  <p>
-    <a href="/logout">Kirjaudu ulos</a>
-  </p>
+    <p>
+      Olet kirjautunut sisään käyttäjätunnuksella <strong>{{ session.username }}</strong>.
+    </p>
+    <p>
+      <a href="/logout">Kirjaudu ulos</a>
+    </p>
 
   {% else %}
-  <form action="/login" method="post">
+    <form action="/login" method="post">
+      <p>
+        Tunnus: <br />
+        <input type="text" name="username" value="{{ filled.username }}"/>
+      </p>
+      <p>
+        Salasana: <br />
+        <input type="password" name="password"/>
+      </p>
+      <input type="submit" value="Kirjaudu"/>
+      {% if next_page %}
+        <input type="hidden" name="next_page" value="{{ next_page }}"/>
+      {% else %}
+        <input type="hidden" name="next_page" value="/"/>
+      {% endif %}
+    </form>
     <p>
-      Tunnus: <br />
-      <input type="text" name="username" />
+      Eikö sinulla ole vielä tunnusta?
+      <a href="/register">Luo uusi tunnus</a>
     </p>
-    <p>
-      Salasana: <br />
-      <input type="password" name="password" />
-    </p>
-    <input type="submit" value="Kirjaudu" />
-  </form>
   {% endif %}
+
+  <p>
+    <a href="/">Palaa etusivulle</a>
+  </p>
+
 </body>
 
 </html>

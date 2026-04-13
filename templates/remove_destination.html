@@ -7,14 +7,15 @@
 </head>
 
 <body>
-  <h1>Poista retkikohde</h1>
-    <p>Olet poistamassa retkikohteen <strong>{{ destination.title }}</strong>.</p>
-    <p>Haluatko varmasti poistaa tämän retkikohteen?</p>
-    </p>
-    <form action="/remove_destination/{{ destination.id }}" method="post">
-      <input type="submit" name="remove" value="Kyllä, poista kohde" />
-      <input type="submit" name="back" value="Ei, palaa takaisin" />
-    </form>
+  <h2>Poista retkikohde</h2>
+  <p>
+    Olet poistamassa retkikohteen <strong>{{ destination.title }}</strong>.<br />
+    Haluatko varmasti poistaa tämän retkikohteen?
+  </p>
+  <form action="/remove_destination/{{ destination.id }}" method="post">
+    <input type="submit" name="remove" value="Kyllä, poista kohde"/>
+    <input type="submit" name="back" value="Ei, palaa takaisin"/>
+  </form>
 </body>
 
 </html>

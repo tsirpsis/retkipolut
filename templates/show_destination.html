@@ -8,9 +8,9 @@
 
 <body>
   <h2>{{ destination.title }}</h2>
-  <p>Lisätty {{ destination.creation_time }}</p>
+  <p>Lisännyt {{ destination.username }} {{ destination.creation_time }}.</p>
   <h3>Kuvaus kohteesta</h3>
-  <p>{{ destination.content }}</p>
+  <p>{{ destination.content | show_lines}}</p>
 
   {% if session.user_id == destination.user_id %}
     <p>

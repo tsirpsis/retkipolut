@@ -1,8 +1,9 @@
 import db
 
-def add_destination(title, content, creation_time, user_id):
-    sql = "INSERT INTO destinations (title, content, creation_time, user_id) VALUES (?, ?, ?, ?)"
-    db.execute(sql, [title, content, creation_time, user_id])
+def add_destination(title, content, user_id):
+    sql = """INSERT INTO destinations (title, content, creation_time, user_id)
+                VALUES (?, ?, datetime('now', 'localtime'), ?)"""
+    db.execute(sql, [title, content, user_id])
 
 def get_destinations():
     sql = "SELECT id, title FROM destinations ORDER BY title"
@@ -12,7 +13,7 @@ def get_destination(destination_id):
     sql = """SELECT destinations.id,
                 destinations.title,
                 destinations.content,
-                destinations.creation_time,
+                strftime('%d.%m.%Y', destinations.creation_time) AS creation_time,
                 users.id AS user_id,
                 users.username
                 FROM destinations, users

@@ -1,5 +1,5 @@
-from datetime import date
 from flask import Flask, redirect, render_template, request, session, flash
+import markupsafe
 import config
 import destinations
 import errors
@@ -12,6 +12,12 @@ app.secret_key = config.secret_key
 def require_login():
     if "user_id" not in session:
         errors.forbidden()
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 @app.route("/")
 def index():
@@ -84,13 +90,12 @@ def create_destination():
     require_login()
     title = request.form["title"]
     content = request.form["description"]
-    creation_time = date.today()
     user_id = session["user_id"]
 
     if not validations.check_destination(title, content):
         errors.forbidden()
 
-    destinations.add_destination(title, content, creation_time, user_id)
+    destinations.add_destination(title, content, user_id)
 
     return redirect("/")
 

@@ -4,6 +4,7 @@ def add_destination(title, content, user_id):
     sql = """INSERT INTO destinations (title, content, creation_time, user_id)
                 VALUES (?, ?, datetime('now', 'localtime'), ?)"""
     db.execute(sql, [title, content, user_id])
+    return db.last_insert_id()
 
 def get_destinations():
     sql = "SELECT id, title FROM destinations ORDER BY title"

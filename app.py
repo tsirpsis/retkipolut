@@ -95,9 +95,9 @@ def create_destination():
     if not validations.check_destination(title, content):
         errors.forbidden()
 
-    destinations.add_destination(title, content, user_id)
-
-    return redirect("/")
+    destination_id = destinations.add_destination(title, content, user_id)
+    flash("Uusi retkikohde lisätty onnistuneesti!")
+    return redirect(f"/destination/{ destination_id }")
 
 @app.route("/destination/<int:destination_id>")
 def show_destination(destination_id):
@@ -134,7 +134,7 @@ def update_destination():
         errors.forbidden()
 
     destinations.update_destination(destination_id, title, content)
-
+    flash("Retkikohde päivitetty onnistuneesti!")
     return redirect("/destination/" + str(destination_id))
 
 @app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ user.username }}</title>
+</head>
+
+<body>
+  <h2>Käyttäjä {{ user.username }}</h2>
+
+  {% if user_destinations | count == 0 %}
+    <p>Käyttäjä ei ole vielä lisännyt yhtään retkikohdetta.</p>
+  {% else %}
+    <p>Käyttäjä on lisännyt {{ user_destinations | count }} kohdetta.</p>
+    <hr />
+    <h3>Käyttäjän lisäämät retkikohteet</h3>
+    <ul>
+      {% for destination in user_destinations %}
+        <li>
+          <a href="/destination/{{ destination.id }}">
+            {{ destination.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if not session.user_id %}
+    <p>
+      <a href="/login">Kirjaudu sisään</a><br />
+      <a href="/register">Luo uusi tunnus</a>
+    </p>
+  {% endif %}
+
+  <p>
+    <a href="/">Palaa etusivulle</a>
+  </p>
+
+</body>
+
+</html>

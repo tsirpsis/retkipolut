@@ -15,8 +15,11 @@
 
   <h2>{{ destination.title }}</h2>
 
-  <p>Kohteen lisäsi käyttäjä <b>{{ destination.username }}</b>
-    {{ destination.creation_time }}.</p>
+  <p>
+    Kohteen lisäsi käyttäjä
+    <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
+    {{ destination.creation_time }}.
+  </p>
   <h3>Kuvaus kohteesta</h3>
   <p>{{ destination.content | show_lines}}</p>
 

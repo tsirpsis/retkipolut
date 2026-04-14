@@ -23,3 +23,15 @@ def check_login(username, password):
     if check_password_hash(password_hash, password):
         return user_id
     return None
+
+def get_user(user_id):
+    sql = "SELECT id, username FROM users WHERE id = ?"
+    result = db.query(sql, [user_id])
+    return result[0] if result else None
+
+def get_destinations(user_id):
+    sql = """SELECT id,
+                    title,
+                    strftime('%d.%m.%Y', creation_time) AS creation_time
+                    FROM destinations WHERE user_id = ?"""
+    return db.query(sql, [user_id])

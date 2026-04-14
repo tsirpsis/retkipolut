@@ -80,6 +80,14 @@ def logout():
     del session["user_id"]
     return redirect("/")
 
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        errors.not_found()
+    user_destinations = users.get_destinations(user_id)
+    return render_template("show_user.html", user=user, user_destinations=user_destinations)
+
 @app.route("/new_destination")
 def new_destination():
     require_login()

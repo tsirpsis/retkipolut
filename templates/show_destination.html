@@ -23,6 +23,15 @@
   <h3>Kuvaus kohteesta</h3>
   <p>{{ destination.content | show_lines}}</p>
 
+  {% if classes %}
+    <h3>Retkipolku kuuluu luokkiin</h3>
+    <ul>
+      {% for class in classes %}
+        <li>{{ class.title }}: {{ class.value }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
   {% if session.user_id == destination.user_id %}
     <p>
       <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>

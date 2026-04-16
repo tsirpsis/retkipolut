@@ -19,3 +19,16 @@ CREATE TABLE messages (
     user_id INTEGER REFERENCES users,
     destination_id INTEGER REFERENCES destinations
 );
+
+CREATE TABLE destination_classes (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    value TEXT,
+    destination_id INTEGER REFERENCES destinations ON DELETE CASCADE
+);
+
+CREATE TABLE classes (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    value TEXT
+);

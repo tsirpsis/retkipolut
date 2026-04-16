@@ -91,7 +91,8 @@ def show_user(user_id):
 @app.route("/new_destination")
 def new_destination():
     require_login()
-    return render_template("new_destination.html")
+    classes = destinations.get_all_classes()
+    return render_template("new_destination.html", classes=classes)
 
 @app.route("/create_destination", methods=["POST"])
 def create_destination():
@@ -103,7 +104,13 @@ def create_destination():
     if not validations.check_destination(title, content):
         errors.forbidden()
 
-    destination_id = destinations.add_destination(title, content, user_id)
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
+
+    destination_id = destinations.add_destination(title, content, user_id, classes)
     flash("Uusi retkikohde lisätty onnistuneesti!")
     return redirect(f"/destination/{ destination_id }")
 
@@ -112,7 +119,9 @@ def show_destination(destination_id):
     destination = destinations.get_destination(destination_id)
     if not destination:
         errors.not_found()
-    return render_template("show_destination.html", destination=destination)
+    classes = destinations.get_classes(destination_id)
+
+    return render_template("show_destination.html", destination=destination, classes=classes)
 
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):

@@ -1,10 +1,16 @@
 import db
 
-def add_destination(title, content, user_id):
+def add_destination(title, content, user_id, classes):
     sql = """INSERT INTO destinations (title, content, creation_time, user_id)
                 VALUES (?, ?, datetime('now', 'localtime'), ?)"""
     db.execute(sql, [title, content, user_id])
-    return db.last_insert_id()
+
+    destination_id = db.last_insert_id()
+    sql = """INSERT INTO destination_classes (title, value, destination_id)
+                VALUES (?, ?, ?)"""
+    for title, value in classes:
+        db.execute(sql, [title, value, destination_id])
+    return destination_id
 
 def get_destinations():
     sql = "SELECT id, title FROM destinations ORDER BY title"
@@ -39,3 +45,20 @@ def find_destinations(query):
                 WHERE title LIKE ? OR content LIKE ?
                 ORDER BY id DESC"""
     return db.query(sql, ["%" + query + "%", "%" + query + "%"])
+
+def get_classes(destination_id):
+    sql = """SELECT title, value
+                FROM destination_classes
+                WHERE destination_id = ?"""
+    return db.query(sql, [destination_id])
+
+def get_all_classes():
+    sql = """SELECT title, value FROM classes ORDER BY id"""
+    result = db.query(sql)
+
+    classes = {}
+    for title, value in result:
+        classes[title] = []
+    for title, value in result:
+        classes[title].append(value)
+    return classes

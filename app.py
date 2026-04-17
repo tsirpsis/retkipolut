@@ -105,16 +105,15 @@ def create_destination():
     if not validations.check_destination(title, content):
         errors.forbidden()
 
-    classes = []
-    for entry in request.form.getlist("classes"):
-        if entry:
-            parts = entry.split(":")
-            classes.append((parts[0], parts[1]))
+    entries = request.form.getlist("classes")
+    all_classes = destinations.get_all_classes()
 
-    destination_id = destinations.add_destination(title, content, user_id,
-                                                  classes)
-    flash("Uusi retkikohde lisätty onnistuneesti!")
-    return redirect(f"/destination/{ destination_id }")
+    classes = validations.check_classes(entries, all_classes)
+    if classes == [] or classes:
+        destination_id = destinations.add_destination(title, content, user_id, classes)
+        flash("Uusi retkikohde lisätty onnistuneesti!")
+        return redirect("/destination/" + str(destination_id))
+    errors.forbidden()
 
 @app.route("/destination/<int:destination_id>")
 def show_destination(destination_id):
@@ -161,15 +160,15 @@ def update_destination():
     if not validations.check_destination(title, content):
         errors.forbidden()
 
-    classes = []
-    for entry in request.form.getlist("classes"):
-        if entry:
-            parts = entry.split(":")
-            classes.append((parts[0], parts[1]))
+    entries = request.form.getlist("classes")
+    all_classes = destinations.get_all_classes()
 
-    destinations.update_destination(destination_id, title, content, classes)
-    flash("Retkikohde päivitetty onnistuneesti!")
-    return redirect("/destination/" + str(destination_id))
+    classes = validations.check_classes(entries, all_classes)
+    if classes == [] or classes:
+        destinations.update_destination(destination_id, title, content, classes)
+        flash("Retkikohde päivitetty onnistuneesti!")
+        return redirect("/destination/" + str(destination_id))
+    errors.forbidden()
 
 @app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])
 def remove_destination(destination_id):

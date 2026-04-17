@@ -86,7 +86,8 @@ def show_user(user_id):
     if not user:
         errors.not_found()
     user_destinations = users.get_destinations(user_id)
-    return render_template("show_user.html", user=user, user_destinations=user_destinations)
+    return render_template("show_user.html", user=user,
+                           user_destinations=user_destinations)
 
 @app.route("/new_destination")
 def new_destination():
@@ -110,7 +111,8 @@ def create_destination():
             parts = entry.split(":")
             classes.append((parts[0], parts[1]))
 
-    destination_id = destinations.add_destination(title, content, user_id, classes)
+    destination_id = destinations.add_destination(title, content, user_id,
+                                                  classes)
     flash("Uusi retkikohde lisätty onnistuneesti!")
     return redirect(f"/destination/{ destination_id }")
 
@@ -121,7 +123,8 @@ def show_destination(destination_id):
         errors.not_found()
     classes = destinations.get_classes(destination_id)
 
-    return render_template("show_destination.html", destination=destination, classes=classes)
+    return render_template("show_destination.html", destination=destination,
+                            classes=classes)
 
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):
@@ -132,7 +135,15 @@ def edit_destination(destination_id):
     if destination["user_id"] != session["user_id"]:
         errors.forbidden()
 
-    return render_template("edit_destination.html", destination=destination)
+    all_classes = destinations.get_all_classes()
+    classes = {}
+    for category in all_classes:
+        classes[category] = ""
+    for entry in destinations.get_classes(destination_id):
+        classes[entry["title"]] = entry["value"]
+
+    return render_template("edit_destination.html", destination=destination,
+                            all_classes=all_classes, classes=classes)
 
 @app.route("/update_destination", methods=["POST"])
 def update_destination():
@@ -150,7 +161,13 @@ def update_destination():
     if not validations.check_destination(title, content):
         errors.forbidden()
 
-    destinations.update_destination(destination_id, title, content)
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
+
+    destinations.update_destination(destination_id, title, content, classes)
     flash("Retkikohde päivitetty onnistuneesti!")
     return redirect("/destination/" + str(destination_id))
 

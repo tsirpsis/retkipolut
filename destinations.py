@@ -8,8 +8,8 @@ def add_destination(title, content, user_id, classes):
     destination_id = db.last_insert_id()
     sql = """INSERT INTO destination_classes (title, value, destination_id)
                 VALUES (?, ?, ?)"""
-    for title, value in classes:
-        db.execute(sql, [title, value, destination_id])
+    for class_title, value in classes:
+        db.execute(sql, [class_title, value, destination_id])
     return destination_id
 
 def get_destinations():
@@ -20,7 +20,8 @@ def get_destination(destination_id):
     sql = """SELECT destinations.id,
                 destinations.title,
                 destinations.content,
-                strftime('%d.%m.%Y', destinations.creation_time) AS creation_time,
+                strftime('%d.%m.%Y', destinations.creation_time)
+                    AS creation_time,
                 users.id AS user_id,
                 users.username
                 FROM destinations, users
@@ -29,11 +30,19 @@ def get_destination(destination_id):
     result = db.query(sql, [destination_id])
     return result[0] if result else None
 
-def update_destination(destination_id, title, content):
+def update_destination(destination_id, title, content, classes):
     sql = """UPDATE destinations
                 SET title = ?, content = ?
                 WHERE id = ?"""
     db.execute(sql, [title, content, destination_id])
+
+    sql = "DELETE FROM destination_classes WHERE destination_id = ?"
+    db.execute(sql, [destination_id])
+
+    sql = """INSERT INTO destination_classes (title, value, destination_id)
+                VALUES (?, ?, ?)"""
+    for class_title, value in classes:
+        db.execute(sql, [class_title, value, destination_id])
 
 def remove_destination(destination_id):
     sql = """DELETE FROM destinations WHERE id = ?"""

@@ -12,12 +12,12 @@ CREATE TABLE destinations (
     user_id INTEGER REFERENCES users
 );
 
-CREATE TABLE messages (
+CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
     content TEXT,
     sent_at TEXT,
-    user_id INTEGER REFERENCES users,
-    destination_id INTEGER REFERENCES destinations
+    user_id INTEGER REFERENCES users ON DELETE CASCADE,
+    destination_id INTEGER REFERENCES destinations ON DELETE CASCADE
 );
 
 CREATE TABLE destination_classes (

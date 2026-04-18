@@ -120,10 +120,15 @@ def show_destination(destination_id):
     destination = destinations.get_destination(destination_id)
     if not destination:
         errors.not_found()
-    classes = destinations.get_classes(destination_id)
 
-    return render_template("show_destination.html", destination=destination,
-                            classes=classes)
+    session["destination_id"] = destination["id"]
+
+    classes = destinations.get_classes(destination_id)
+    comments = destinations.get_comments(destination_id)
+
+    return render_template("show_destination.html",
+                           destination=destination,
+                           classes=classes, comments=comments)
 
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):
@@ -197,3 +202,26 @@ def find_destination():
         query = ""
         results = []
     return render_template("find_destination.html", query=query, results=results)
+
+@app.route("/create_comment", methods=["POST"])
+def create_comment():
+    require_login()
+
+    user_id = session["user_id"]
+    destination_id = request.form["destination_id"]
+
+    content = request.form["content"]
+    if not validations.check_comment(content):
+        errors.forbidden()
+
+    session_destination_id = session.get("destination_id")
+    destination = destinations.get_destination(destination_id)
+
+    if not destination:
+        errors.not_found()
+    if str(destination_id) != str(session_destination_id):
+        errors.forbidden()
+
+    destinations.add_comment(content, user_id, destination_id)
+    flash("Uusi kommentti lisätty onnistuneesti!")
+    return redirect("/destination/" + str(destination_id))

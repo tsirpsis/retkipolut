@@ -71,3 +71,21 @@ def get_all_classes():
     for title, value in result:
         classes[title].append(value)
     return classes
+
+def add_comment(content, user_id, destination_id):
+    sql = """INSERT INTO comments (content, sent_at,
+                                    user_id, destination_id)
+                VALUES (?, datetime('now', 'localtime'), ?, ?)"""
+    return db.execute(sql, [content, user_id, destination_id])
+
+def get_comments(destination_id):
+    sql = """SELECT c.id,
+                    c.user_id,
+                    u.username,
+                    c.destination_id,
+                    c.content,
+                    strftime('%d.%m.%Y %H:%M', c.sent_at) AS sent_at
+            FROM comments c, users u
+            WHERE c.user_id = u.id AND c.destination_id = ?
+            ORDER BY c.id"""
+    return db.query(sql, [destination_id])

@@ -20,3 +20,8 @@ def check_classes(entries, all_classes):
                 return None
             classes.append((class_title, class_value))
     return classes
+
+def check_comment(content):
+    if len(content) > 1000:
+        return False
+    return True

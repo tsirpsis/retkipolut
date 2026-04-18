@@ -20,6 +20,13 @@
     <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
     {{ destination.creation_time }}.
   </p>
+  {% if session.user_id == destination.user_id %}
+    <p>
+      <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
+      <a href="/remove_destination/{{ destination.id }}">Poista</a>
+    </p>
+  {% endif %}
+
   <h3>Kuvaus kohteesta</h3>
   <p>{{ destination.content | show_lines}}</p>
 
@@ -32,14 +39,29 @@
     </ul>
   {% endif %}
 
-  {% if session.user_id == destination.user_id %}
-    <p>
-      <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
-      <a href="/remove_destination/{{ destination.id }}">Poista</a>
-    </p>
+  <h3>Kohteen kommentit</h3>
+  {% if comments %}
+    {% for comment in comments %}
+      <p><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a> ({{ comment.sent_at }}):</p>
+      <p>{{ comment.content | show_lines }}</p>
+    <hr />
+    {% endfor %}
+  {% else %}
+    <p>Kohteella ei ole vielä kommentteja.</p>
   {% endif %}
 
-  {% if not session.user_id %}
+  {% if session.user_id %}
+    <h3>Lisää uusi kommentti</h3>
+    <form action="/create_comment" method="post">
+      <p>
+        Viesti: <br />
+        <textarea name="content" rows="5" cols="60" maxlength="1000"></textarea>
+      </p>
+      <input type="hidden" name="destination_id"
+        value="{{ destination.id }}"/>
+      <input type="submit" value="Lähetä"/>
+    </form>
+  {% else %}
     <p>
       <a href="/login">Kirjaudu sisään</a><br />
       <a href="/register">Luo uusi tunnus</a>

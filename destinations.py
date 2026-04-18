@@ -89,3 +89,17 @@ def get_comments(destination_id):
             WHERE c.user_id = u.id AND c.destination_id = ?
             ORDER BY c.id"""
     return db.query(sql, [destination_id])
+
+def add_image(image, image_type, destination_id):
+    sql = """INSERT INTO images (image, image_type, destination_id)
+            VALUES (?, ?, ?)"""
+    db.execute(sql, [image, image_type,destination_id])
+
+def get_images(destination_id):
+    sql = "SELECT id FROM images WHERE destination_id = ?"
+    return db.query(sql, [destination_id])
+
+def get_image(image_id):
+    sql = "SELECT image, image_type FROM images WHERE id = ?"
+    result = db.query(sql, [image_id])
+    return result[0] if result else None

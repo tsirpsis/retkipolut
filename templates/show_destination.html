@@ -24,11 +24,21 @@
     <p>
       <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
       <a href="/remove_destination/{{ destination.id }}">Poista</a>
+      <a href="/images/{{ destination.id }}">Kuvat</a>
     </p>
   {% endif %}
 
   <h3>Kuvaus kohteesta</h3>
   <p>{{ destination.content | show_lines}}</p>
+
+  <h3>Kuvia kohteesta</h3>
+  {% if images %}
+    {% for image in images %}
+      <img src="/image/{{ image.id }}" alt="Kuva kohteesta {{ destination.title }}"/>
+    {% endfor %}
+  {% else %}
+    <p>Käyttäjä ei ole lisännyt kuvia kohteesta.</p>
+  {% endif %}
 
   {% if classes %}
     <h3>Retkipolku kuuluu luokkiin</h3>

@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, session, flash
+from flask import Flask, redirect, render_template, request, session, flash, make_response
 import markupsafe
 import config
 import destinations
@@ -125,10 +125,10 @@ def show_destination(destination_id):
 
     classes = destinations.get_classes(destination_id)
     comments = destinations.get_comments(destination_id)
+    images = destinations.get_images(destination_id)
 
     return render_template("show_destination.html",
-                           destination=destination,
-                           classes=classes, comments=comments)
+                           destination=destination,classes=classes,comments=comments, images=images)
 
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):
@@ -225,3 +225,61 @@ def create_comment():
     destinations.add_comment(content, user_id, destination_id)
     flash("Uusi kommentti lisätty onnistuneesti!")
     return redirect("/destination/" + str(destination_id))
+
+@app.route("/images/<int:destination_id>")
+def edit_images(destination_id):
+    require_login()
+    destination = destinations.get_destination(destination_id)
+
+    if not destination:
+        errors.not_found()
+    if destination["user_id"] != session["user_id"]:
+        errors.forbidden()
+
+    images = destinations.get_images(destination_id)
+
+    return render_template("images.html", destination=destination, images=images)
+
+@app.route("/add_image", methods=["POST"])
+def add_image():
+    require_login()
+
+    destination_id = request.form["destination_id"]
+    destination = destinations.get_destination(destination_id)
+    if not destination:
+        errors.not_found()
+    if destination["user_id"] != session["user_id"]:
+        errors.forbidden()
+
+    file = request.files["image"]
+    image_type = file.content_type
+    image = file.read()
+
+    print("file", file)
+
+    if not validations.check_image_type(image_type):
+        flash("VIRHE: väärä tiedostomuoto, vain .jpg tai .png käy.")
+        return redirect("/images/" + str(destination_id))
+
+    if not validations.check_image_size(image):
+        flash("VIRHE: liian suuri kuva. Maksimikoko on 500 KB.")
+        return redirect("/images/" + str(destination_id))
+
+    destinations.add_image(image, image_type, destination_id)
+    flash("Uusi kuva lisätty onnistuneesti!")
+    return redirect("/destination/" + str(destination_id))
+
+@app.route("/image/<int:image_id>")
+def show_image(image_id):
+    image, image_type = destinations.get_image(image_id)
+    if not image:
+        errors.not_found()
+
+    response = make_response(bytes(image))
+
+    if image_type in ('image/jpg', 'image/jpeg'):
+        response.headers.set("Content-Type", "image/jpeg")
+    if image_type == 'image/png':
+        response.headers.set("Content-Type", "image/png")
+
+    return response

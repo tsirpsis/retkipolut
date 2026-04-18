@@ -25,3 +25,13 @@ def check_comment(content):
     if len(content) > 1000:
         return False
     return True
+
+def check_image_type(image_type):
+    if image_type not in ["image/jpeg", "image/png"]:
+        return False
+    return True
+
+def check_image_size(image):
+    if len(image) > 500 * 1024:
+        return False
+    return True

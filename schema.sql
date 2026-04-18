@@ -32,3 +32,10 @@ CREATE TABLE classes (
     title TEXT,
     value TEXT
 );
+
+CREATE TABLE images (
+    id INTEGER PRIMARY KEY,
+    image BLOB,
+    image_type TEXT,
+    destination_id INTEGER REFERENCES destinations ON DELETE CASCADE
+);

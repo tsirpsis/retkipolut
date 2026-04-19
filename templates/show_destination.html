@@ -24,12 +24,25 @@
     <p>
       <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
       <a href="/remove_destination/{{ destination.id }}">Poista</a>
-      <a href="/images/{{ destination.id }}">Kuvat</a>
+      <a href="/images/{{ destination.id }}">Hallinnoi kuvia</a>
     </p>
   {% endif %}
 
   <h3>Kuvaus kohteesta</h3>
-  <p>{{ destination.content | show_lines}}</p>
+    {% if destination.content %}
+      <p>{{ destination.content | show_lines}}</p>
+    {% else %}
+      <p>Käyttäjä ei ole lisännyt kohteelle kuvausta.</p>
+    {% endif %}
+
+  {% if classes %}
+    <h3>Retkipolun luokittelu</h3>
+    <ul>
+      {% for class in classes %}
+        <li>{{ class.title }}: {{ class.value }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 
   <h3>Kuvia kohteesta</h3>
   {% if images %}
@@ -38,15 +51,6 @@
     {% endfor %}
   {% else %}
     <p>Käyttäjä ei ole lisännyt kuvia kohteesta.</p>
-  {% endif %}
-
-  {% if classes %}
-    <h3>Retkipolku kuuluu luokkiin</h3>
-    <ul>
-      {% for class in classes %}
-        <li>{{ class.title }}: {{ class.value }}</li>
-      {% endfor %}
-    </ul>
   {% endif %}
 
   <h3>Kohteen kommentit</h3>

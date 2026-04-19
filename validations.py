@@ -22,7 +22,7 @@ def check_classes(entries, all_classes):
     return classes
 
 def check_comment(content):
-    if len(content) > 1000:
+    if len(content) > 500 or len(content) < 1:
         return False
     return True
 

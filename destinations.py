@@ -103,3 +103,8 @@ def get_image(image_id):
     sql = "SELECT image, image_type FROM images WHERE id = ?"
     result = db.query(sql, [image_id])
     return result[0] if result else None
+
+def remove_image(image_id, destination_id):
+    sql = """DELETE FROM images
+            WHERE id = ? AND destination_id = ?"""
+    db.execute(sql, [image_id, destination_id])

@@ -13,18 +13,34 @@
     </p>
   {% endfor %}
 
-  <h2>Kohteen kuvat</h2>
+  <h2>Kohteen {{ destination.title }} kuvat</h2>
+  <p>Olet lisännyt kohteesta {{ images | count }} kuvaa.</p>
 
   {% if session.user_id == destination.user_id %}
     <h3>Lisää uusi kuva</h3>
     <p>Kuvan tiedostomuodon tulee olla .png tai .jpg ja kuvan maksimikoko on 500 KB.</p>
+
     <form action="/add_image" method="post" enctype="multipart/form-data">
       <p>
-        Kuva: <input type="file" name="image" accept=".jpg, .png" />
+        Valitse kuva: <input type="file" name="image" accept=".jpg, .png" />
+        <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
+        <input type="submit" value="Lisää kuva"/>
       </p>
-      <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
-      <input type="submit" value="Lähetä" />
     </form>
+
+    <h3>Poista kuvia</h3>
+    <form action="/remove_images" method="post">
+      {% for image in images %}
+        <input type="checkbox" name="image_id" value="{{ image.id }}"/>
+        <img src="/image/{{ image.id }}" alt="Kuva kohteesta {{ destination.title }}"/>
+        <br />
+      {% endfor %}
+      <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
+      <p>
+        <input type="submit" value="Poista valitut" />
+      </p>
+    </form>
+
   {% endif %}
 
   <p>

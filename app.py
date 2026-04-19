@@ -253,17 +253,18 @@ def add_image():
 
     file = request.files["image"]
     image_type = file.content_type
-    image = file.read()
 
-    print("file", file)
+    image = file.read()
 
     if not validations.check_image_type(image_type):
         flash("VIRHE: väärä tiedostomuoto, vain .jpg tai .png käy.")
         return redirect("/images/" + str(destination_id))
 
+
     if not validations.check_image_size(image):
         flash("VIRHE: liian suuri kuva. Maksimikoko on 500 KB.")
         return redirect("/images/" + str(destination_id))
+
 
     destinations.add_image(image, image_type, destination_id)
     flash("Uusi kuva lisätty onnistuneesti!")
@@ -272,6 +273,7 @@ def add_image():
 @app.route("/image/<int:image_id>")
 def show_image(image_id):
     image, image_type = destinations.get_image(image_id)
+
     if not image:
         errors.not_found()
 
@@ -283,3 +285,20 @@ def show_image(image_id):
         response.headers.set("Content-Type", "image/png")
 
     return response
+
+@app.route("/remove_images", methods=["POST"])
+def remove_images():
+    require_login()
+
+    destination_id = request.form["destination_id"]
+    destination = destinations.get_destination(destination_id)
+    if not destination:
+        errors.not_found()
+    if destination["user_id"] != session["user_id"]:
+        errors.forbidden()
+
+    for image_id in request.form.getlist("image_id"):
+        destinations.remove_image(image_id, destination_id)
+
+    flash("Kuva(t) poistettu onnistuneesti!")
+    return redirect("/images/" + str(destination_id))

@@ -1,45 +1,14 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <title>Retkipolkusovellus</title>
-</head>
+{% block title %}Etusivu{% endblock %}
 
-<body>
-  <h1>Tervetuloa retkipolkusovellukseen</h1>
+{% block content %}
 
-  {% if session.username %}
-    <p>
-      Olet kirjautunut nimellä {{ session.username }}.
-    </p>
-    <p>
-      <a href="/logout">Kirjaudu ulos</a>
-    </p>
+<h2>Retkikohteet</h2>
+<ul>
+  {% for destination in destinations %}
+    <li><a href="/destination/{{ destination.id }}">{{ destination.title }}</a></li>
+  {% endfor %}
+</ul>
 
-    <h2>Uusi retkikohde</h2>
-    <p>
-      <a href="/new_destination">Lisää uusi retkikohde</a>
-    </p>
-  {% else %}
-    <p>
-      <a href="/login">Kirjaudu sisään</a> tai
-      <a href="/register">rekisteröidy</a> jotta voit lisätä uuden retkikohteen tai kommentin.
-    </p>
-  {% endif %}
-
-  <h2>Retkikohteet</h2>
-  <ul>
-    {% for destination in destinations %}
-      <li><a href="/destination/{{ destination.id }}">{{ destination.title }}</a></li>
-    {% endfor %}
-  </ul>
-
-  <h2>Etsi retkikohdetta nimellä</h2>
-  <p>
-    <a href="/find_destination">Hakusivulle</a>
-  </p>
-
-</body>
-
-</html>
+{% endblock %}

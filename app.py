@@ -35,7 +35,7 @@ def create():
     password2 = request.form["password2"]
 
     if password1 != password2:
-        flash("VIRHE: Antamasi salasanat eivät ole samat.")
+        flash("VIRHE: Antamasi salasanat eivät täsmää, anna salasanat uudelleen.")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 
@@ -190,6 +190,7 @@ def remove_destination(destination_id):
     if request.method == "POST":
         if "remove" in request.form:
             destinations.remove_destination(destination_id)
+            flash("Retkikohde poistettu onnistuneesti!")
             return redirect("/")
         return redirect("/destination/" + str(destination_id))
 

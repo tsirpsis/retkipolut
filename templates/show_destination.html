@@ -1,91 +1,72 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <title>{{ destination.title }}</title>
-</head>
+{% block title %}{{ destination.title }}{% endblock %}
 
-<body>
-  {% for message in get_flashed_messages() %}
-    <p>
-      <b>{{ message }}</b>
-    </p>
+{% block content %}
+
+<h2>{{ destination.title }}</h2>
+
+<p>
+  Kohteen lisäsi käyttäjä
+  <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
+  {{ destination.creation_time }}.
+</p>
+{% if session.user_id == destination.user_id %}
+  <p>
+    <a href="/edit_destination/{{ destination.id }}">Muokkaa</a> |
+    <a href="/remove_destination/{{ destination.id }}">Poista</a> |
+    <a href="/images/{{ destination.id }}">Hallinnoi kuvia</a>
+  </p>
+{% endif %}
+
+<h3>Kuvaus kohteesta</h3>
+  {% if destination.content %}
+    <p>{{ destination.content | show_lines}}</p>
+  {% else %}
+    <p>Käyttäjä ei ole lisännyt kohteelle kuvausta.</p>
+  {% endif %}
+
+{% if classes %}
+  <h3>Retkipolun luokittelu</h3>
+  <ul>
+    {% for class in classes %}
+      <li>{{ class.title }}: {{ class.value }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<h3>Kuvia kohteesta</h3>
+{% if images %}
+  {% for image in images %}
+    <img src="/image/{{ image.id }}" alt="Kuva kohteesta {{ destination.title }}"/>
   {% endfor %}
+{% else %}
+  <p>Käyttäjä ei ole lisännyt kuvia kohteesta.</p>
+{% endif %}
 
-  <h2>{{ destination.title }}</h2>
+<h3>Kohteen kommentit</h3>
+{% if comments %}
+  {% for comment in comments %}
+    <p><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a> ({{ comment.sent_at }}):</p>
+    <p>{{ comment.content | show_lines }}</p>
+  <hr />
+  {% endfor %}
+{% else %}
+  <p>Kohteella ei ole vielä kommentteja.</p>
+{% endif %}
 
-  <p>
-    Kohteen lisäsi käyttäjä
-    <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
-    {{ destination.creation_time }}.
-  </p>
-  {% if session.user_id == destination.user_id %}
+{% if session.user_id %}
+  <h3>Lisää uusi kommentti</h3>
+  <form action="/create_comment" method="post">
     <p>
-      <a href="/edit_destination/{{ destination.id }}">Muokkaa</a>
-      <a href="/remove_destination/{{ destination.id }}">Poista</a>
-      <a href="/images/{{ destination.id }}">Hallinnoi kuvia</a>
+      Viesti: <br />
+      <textarea name="content" rows="5" cols="60" maxlength="1000"></textarea>
     </p>
-  {% endif %}
+    <input type="hidden" name="destination_id"
+      value="{{ destination.id }}"/>
+    <input type="submit" value="Lähetä"/>
+  </form>
+{% endif %}
 
-  <h3>Kuvaus kohteesta</h3>
-    {% if destination.content %}
-      <p>{{ destination.content | show_lines}}</p>
-    {% else %}
-      <p>Käyttäjä ei ole lisännyt kohteelle kuvausta.</p>
-    {% endif %}
 
-  {% if classes %}
-    <h3>Retkipolun luokittelu</h3>
-    <ul>
-      {% for class in classes %}
-        <li>{{ class.title }}: {{ class.value }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  <h3>Kuvia kohteesta</h3>
-  {% if images %}
-    {% for image in images %}
-      <img src="/image/{{ image.id }}" alt="Kuva kohteesta {{ destination.title }}"/>
-    {% endfor %}
-  {% else %}
-    <p>Käyttäjä ei ole lisännyt kuvia kohteesta.</p>
-  {% endif %}
-
-  <h3>Kohteen kommentit</h3>
-  {% if comments %}
-    {% for comment in comments %}
-      <p><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a> ({{ comment.sent_at }}):</p>
-      <p>{{ comment.content | show_lines }}</p>
-    <hr />
-    {% endfor %}
-  {% else %}
-    <p>Kohteella ei ole vielä kommentteja.</p>
-  {% endif %}
-
-  {% if session.user_id %}
-    <h3>Lisää uusi kommentti</h3>
-    <form action="/create_comment" method="post">
-      <p>
-        Viesti: <br />
-        <textarea name="content" rows="5" cols="60" maxlength="1000"></textarea>
-      </p>
-      <input type="hidden" name="destination_id"
-        value="{{ destination.id }}"/>
-      <input type="submit" value="Lähetä"/>
-    </form>
-  {% else %}
-    <p>
-      <a href="/login">Kirjaudu sisään</a><br />
-      <a href="/register">Luo uusi tunnus</a>
-    </p>
-  {% endif %}
-
-  <p>
-    <a href="/">Palaa etusivulle</a>
-  </p>
-
-</body>
-
-</html>
+{% endblock %}

@@ -1,41 +1,39 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <title>Etsi retkikohde</title>
-</head>
+{% block title %}Haku{% endblock %}
 
-<body>
-  <h2>Etsi retkikohdetta</h2>
-  <form action="/find_destination" method="get">
-    <p>
-      Hakusana: <input type="text" name="query" value="{{ query }}"> 
-      <input type="submit" value="Etsi">
-    </p>
-  </form>
+{% block content %}
 
+{% for message in get_flashed_messages() %}
   <p>
-    <a href="/">Palaa etusivulle</a>
+    <b>{{ message }}</b>
   </p>
+{% endfor %}
 
-  {% if query %}
-    <hr />
-    <h3>Hakutulokset</h3>
-    <ul>
-      {% for destination in results %}
-        <li>
-          <a href="/destination/{{ destination.id }}">
-            {{ destination.title }}
-          </a>
-          <br />
-        </li>
-      {% endfor %}
-    </ul>
-    {% if results|length == 0 %}
-      <p>Hakusanalla ei löytynyt kohteita.</p>  
-    {% endif %}
+<h2>Etsi retkikohdetta</h2>
+<form action="/find_destination" method="get">
+  <p>
+    Hakusana: <input type="text" name="query" value="{{ query }}">
+    <input type="submit" value="Etsi">
+  </p>
+</form>
+
+{% if query %}
+  <hr />
+  <h3>Hakutulokset</h3>
+  <ul>
+    {% for destination in results %}
+      <li>
+        <a href="/destination/{{ destination.id }}">
+          {{ destination.title }}
+        </a>
+        <br />
+      </li>
+    {% endfor %}
+  </ul>
+  {% if results|length == 0 %}
+    <p>Hakusanalla ei löytynyt kohteita.</p>
   {% endif %}
-</body>
+{% endif %}
 
-</html>
+{% endblock %}

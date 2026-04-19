@@ -1,46 +1,28 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <title>Rekisteröinti</title>
-</head>
+{% block title %}Rekisteröityminen{% endblock %}
 
-<body>
-  <form action="/create" method="post">
-    <h2>Luo uusi tunnus</h2>
-    <p>
-      Käyttäjätunnuksessa on oltava vähintään viisi ja salasanassa vähintään kahdeksan merkkiä.
-    </p>
-    {% for message in get_flashed_messages() %}
-      <p>
-        <b>{{ message }}</b>
-      </p>
-    {% endfor %}
+{% block content %}
 
-    <p>
-      Tunnus: <br />
-      <input type="text" name="username" minlength="5" maxlength="25" value="{{ filled.username }}"/>
-    </p>
-    <p>
-      Salasana: <br />
-      <input type="password" name="password1" minlength="8" maxlength="30"/>
-    </p>
-    <p>
-      Salasana uudestaan: <br />
-      <input type="password" name="password2" minlength="8" maxlength="30"/>
-    </p>
-    <input type="submit" value="Luo tunnus"/>
-  </form>
+<form action="/create" method="post">
+  <h2>Luo uusi tunnus</h2>
   <p>
-    Onko sinulla jo tunnus?
-    <a href="/login">Kirjaudu sisään</a>
+    Käyttäjätunnuksessa on oltava vähintään viisi ja salasanassa vähintään kahdeksan merkkiä.
   </p>
 
   <p>
-    <a href="/">Palaa etusivulle</a>
+    Tunnus: <br />
+    <input type="text" name="username" minlength="5" maxlength="25" value="{{ filled.username }}"/>
   </p>
+  <p>
+    Salasana: <br />
+    <input type="password" name="password1" minlength="8" maxlength="30"/>
+  </p>
+  <p>
+    Salasana uudestaan: <br />
+    <input type="password" name="password2" minlength="8" maxlength="30"/>
+  </p>
+  <input type="submit" value="Luo tunnus"/>
+</form>
 
-</body>
-
-</html>
+{% endblock %}

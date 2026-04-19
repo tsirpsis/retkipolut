@@ -1,55 +1,40 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <title>Retkikohteen muokkaus</title>
-</head>
+{% block title %}Retkikohteen muokkaus{% endblock %}
 
-<body>
-  {% for message in get_flashed_messages() %}
-    <p>
-      <b>{{ message }}</b>
-    </p>
-  {% endfor %}
+{% block content %}
 
-  <h2>Muokkaa retkikohteen tietoja</h2>
+<h2>Muokkaa retkikohteen tietoja</h2>
 
-  <form action="/update_destination" method="post">
-    <p>
-      Retkikohteen nimi <br />
-      <input type="text" name="title" value="{{ destination.title }}"
-        maxlength="50" required/>
-    </p>
-    <p>
-      Kohteen kuvaus <br />
-      <textarea name="description" rows="5" cols="60" maxlength="1000">{{ destination.content }}</textarea>
-    </p>
-    <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
-
-    {% for class in all_classes %}
-    <p>
-      {{ class }} <br />
-      <select name="classes">
-      <option value="">(Valitse)</option>
-      {% for option in all_classes[class] %}
-        {% if classes[class] == option %}
-          <option value="{{ class }}:{{ option }}" selected>{{ option }}
-          </option>
-        {% else %}
-          <option value="{{ class }}:{{ option }}">{{ option }}</option>
-        {% endif %}
-      {% endfor %}
-      </select>
-    </p>
-    {% endfor %}
-    <input type="submit" value="Tallenna"/>
-  </form>
-
+<form action="/update_destination" method="post">
   <p>
-    <a href="/destination/{{ destination.id }}">Takaisin</a><br />
-    <a href="/">Palaa etusivulle</a>
+    Retkikohteen nimi <br />
+    <input type="text" name="title" value="{{ destination.title }}"
+      maxlength="50" required/>
   </p>
-</body>
+  <p>
+    Kohteen kuvaus <br />
+    <textarea name="description" rows="5" cols="60" maxlength="1000">{{ destination.content }}</textarea>
+  </p>
+  <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
 
-</html>
+  {% for class in all_classes %}
+  <p>
+    {{ class }} <br />
+    <select name="classes">
+    <option value="">(Valitse)</option>
+    {% for option in all_classes[class] %}
+      {% if classes[class] == option %}
+        <option value="{{ class }}:{{ option }}" selected>{{ option }}
+        </option>
+      {% else %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endif %}
+    {% endfor %}
+    </select>
+  </p>
+  {% endfor %}
+  <input type="submit" value="Tallenna"/>
+</form>
+
+{% endblock %}

@@ -1,33 +1,25 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <title>Kohteen kuvat</title>
-</head>
+{% block title %}Kohteen kuvat{% endblock %}
 
-<body>
-  {% for message in get_flashed_messages() %}
+{% block content %}
+
+<h2>Kohteen {{ destination.title }} kuvat</h2>
+<p>Olet lisännyt kohteesta {{ images | count }} kuvaa.</p>
+
+{% if session.user_id == destination.user_id %}
+  <h3>Lisää uusi kuva</h3>
+  <p>Kuvan tiedostomuodon tulee olla .png tai .jpg ja kuvan maksimikoon 500 KB.</p>
+
+  <form action="/add_image" method="post" enctype="multipart/form-data">
     <p>
-      <b>{{ message }}</b>
+      Valitse kuva: <input type="file" name="image" accept=".jpg, .png" />
+      <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
+      <input type="submit" value="Lisää kuva"/>
     </p>
-  {% endfor %}
+  </form>
 
-  <h2>Kohteen {{ destination.title }} kuvat</h2>
-  <p>Olet lisännyt kohteesta {{ images | count }} kuvaa.</p>
-
-  {% if session.user_id == destination.user_id %}
-    <h3>Lisää uusi kuva</h3>
-    <p>Kuvan tiedostomuodon tulee olla .png tai .jpg ja kuvan maksimikoko on 500 KB.</p>
-
-    <form action="/add_image" method="post" enctype="multipart/form-data">
-      <p>
-        Valitse kuva: <input type="file" name="image" accept=".jpg, .png" />
-        <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
-        <input type="submit" value="Lisää kuva"/>
-      </p>
-    </form>
-
+  {% if images %}
     <h3>Poista kuvia</h3>
     <form action="/remove_images" method="post">
       {% for image in images %}
@@ -40,14 +32,7 @@
         <input type="submit" value="Poista valitut" />
       </p>
     </form>
-
   {% endif %}
+{% endif %}
 
-  <p>
-    <a href="/destination/{{ destination.id }}">Takaisin</a><br />
-    <a href="/">Palaa etusivulle</a>
-  </p>
-
-</body>
-
-</html>
+{% endblock %}

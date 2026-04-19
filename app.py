@@ -1,3 +1,4 @@
+import secrets
 from flask import Flask, redirect, render_template, request, session, flash, make_response
 import markupsafe
 import config
@@ -11,6 +12,12 @@ app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        errors.forbidden()
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        errors.forbidden()
+    if request.form["csrf_token"] != session["csrf_token"]:
         errors.forbidden()
 
 @app.template_filter()
@@ -64,6 +71,7 @@ def login():
         if user_id:
             session["username"] = username
             session["user_id"] = user_id
+            session["csrf_token"] = secrets.token_hex(16)
 
             if "register" in next_page:
                 return redirect("/")
@@ -92,12 +100,15 @@ def show_user(user_id):
 @app.route("/new_destination")
 def new_destination():
     require_login()
+
     classes = destinations.get_all_classes()
     return render_template("new_destination.html", classes=classes)
 
 @app.route("/create_destination", methods=["POST"])
 def create_destination():
     require_login()
+    check_csrf()
+
     title = request.form["title"]
     content = request.form["description"]
     user_id = session["user_id"]
@@ -152,6 +163,8 @@ def edit_destination(destination_id):
 @app.route("/update_destination", methods=["POST"])
 def update_destination():
     require_login()
+    check_csrf()
+
     destination_id = request.form["destination_id"]
     destination = destinations.get_destination(destination_id)
     if not destination:
@@ -178,6 +191,7 @@ def update_destination():
 @app.route("/remove_destination/<int:destination_id>", methods=["GET", "POST"])
 def remove_destination(destination_id):
     require_login()
+
     destination = destinations.get_destination(destination_id)
     if not destination:
         errors.not_found()
@@ -188,6 +202,7 @@ def remove_destination(destination_id):
         return render_template("remove_destination.html", destination=destination)
 
     if request.method == "POST":
+        check_csrf()
         if "remove" in request.form:
             destinations.remove_destination(destination_id)
             flash("Retkikohde poistettu onnistuneesti!")
@@ -207,6 +222,7 @@ def find_destination():
 @app.route("/create_comment", methods=["POST"])
 def create_comment():
     require_login()
+    check_csrf()
 
     user_id = session["user_id"]
     destination_id = request.form["destination_id"]
@@ -244,6 +260,7 @@ def edit_images(destination_id):
 @app.route("/add_image", methods=["POST"])
 def add_image():
     require_login()
+    check_csrf()
 
     destination_id = request.form["destination_id"]
     destination = destinations.get_destination(destination_id)
@@ -290,6 +307,7 @@ def show_image(image_id):
 @app.route("/remove_images", methods=["POST"])
 def remove_images():
     require_login()
+    check_csrf()
 
     destination_id = request.form["destination_id"]
     destination = destinations.get_destination(destination_id)

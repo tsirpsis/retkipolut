@@ -15,6 +15,7 @@
     <p>
       Valitse kuva: <input type="file" name="image" accept=".jpg, .png" />
       <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <input type="submit" value="Lisää kuva"/>
     </p>
   </form>
@@ -28,6 +29,7 @@
         <br />
       {% endfor %}
       <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <p>
         <input type="submit" value="Poista valitut" />
       </p>

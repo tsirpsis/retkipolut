@@ -18,5 +18,13 @@ Pääasiallinen tietokohde on retkikohde ja toissijainen on sen kommentti.
 
 ## Ohjeet sovelluksen testaamiseen
 * Kloonaa tämä repositorio.
-* Luo tietokanta database.db skeemasta schema.sql komennolla sqlite3 database.db < schema.sql.
-* Käynnistä sovellus komennolla flask run.
+* Asenna `flask`-kirjasto:
+```
+$ pip install flask
+```
+* Luo tietokannan tarvitsemat taulut ja lisää tiedot luokista:
+```
+$ sqlite3 database.db < schema.sql
+$ sqlite3 database.db < init.sql
+```
+* Käynnistä sovellus komennolla `flask run`.

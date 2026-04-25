@@ -49,3 +49,20 @@ def get_comments(user_id):
             WHERE u.id = ?
             ORDER BY c.sent_at DESC"""
     return db.query(sql, [user_id])
+
+def get_comment(comment_id):
+    sql = """SELECT id,
+                    user_id,
+                    destination_id,
+                    content,
+                    strftime('%d.%m.%Y %H:%M', sent_at) AS sent_at
+            FROM comments
+            WHERE id = ?"""
+    result = db.query(sql, [comment_id])
+    return result[0] if result else None
+
+def update_comment(comment_id, content):
+    sql = """UPDATE comments
+                SET content = ?
+                WHERE id = ?"""
+    db.execute(sql, [content, comment_id])

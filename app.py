@@ -248,6 +248,42 @@ def create_comment():
     flash("Uusi kommentti lisätty onnistuneesti!")
     return redirect("/destination/" + str(destination_id))
 
+@app.route("/edit_comment/<int:comment_id>")
+def edit_comment(comment_id):
+    require_login()
+
+    comment = users.get_comment(comment_id)
+    if not comment:
+        errors.not_found()
+    if comment["user_id"] != session["user_id"]:
+        errors.forbidden()
+
+    return render_template("edit_comment.html", comment=comment)
+
+@app.route("/update_comment", methods=["POST"])
+def update_comment():
+    require_login()
+    check_csrf()
+
+    comment_id = request.form["comment_id"]
+    destination_id = request.form["destination_id"]
+
+    comment = users.get_comment(comment_id)
+
+    if not comment:
+        errors.not_found()
+    if comment["user_id"] != session["user_id"]:
+        errors.forbidden()
+
+    content = request.form["content"]
+
+    if not validations.check_comment(content):
+        errors.forbidden()
+
+    users.update_comment(comment_id, content)
+    flash("Kommentti päivitetty onnistuneesti!")
+    return redirect("/destination/" + str(destination_id))
+
 @app.route("/images/<int:destination_id>")
 def edit_images(destination_id):
     require_login()

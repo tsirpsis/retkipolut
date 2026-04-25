@@ -50,10 +50,17 @@
   {% for comment in comments %}
     <p id="{{ comment.id }}"><a href="/user/{{ comment.user_id }}">
       {{ comment.username }}</a>
-      ({{ comment.sent_at }}):</p>
+      ({{ comment.sent_at }})
+
+      {% if session.user_id == comment.user_id %}
+        <a href="/edit_comment/{{ comment.id }}">Muokkaa</a>
+      {% endif %}
+
+    </p>
     <p>{{ comment.content | show_lines }}</p>
   <hr />
   {% endfor %}
+
 {% else %}
   <p>Kohteella ei ole vielä kommentteja.</p>
 {% endif %}

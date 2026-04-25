@@ -13,17 +13,12 @@
   </div>
 
   <div class="nav">
-    {% if session.user_id %}
-      <p>
-        Olet kirjautunut nimellä <a href="/user/{{ session.user_id }}">{{ session.username }}</a>.
-      </p>
-    {% endif %}
-
     <p>
       <a href="/">Etusivulle</a> |
       <a href="/find_destination">Etsi retkikohdetta</a> |
       {% if session.user_id %}
         <a href="/new_destination">Lisää uusi retkikohde</a> |
+        <a href="/user/{{ session.user_id }}">Omat sivut</a> |
         <a href="/logout">Kirjaudu ulos</a>
       {% else %}
         <a href="/login">Kirjaudu sisään</a> |

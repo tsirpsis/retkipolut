@@ -4,24 +4,54 @@
 
 {% block content %}
 
-<h2>Käyttäjä {{ user.username }}</h2>
+<h2>{{ user.username }}</h2>
 
 {% if user_destinations | count == 0 %}
-  <p>Käyttäjä ei ole vielä lisännyt yhtään retkikohdetta.</p>
+  {% if session.user_id == user.id%}
+    <p>Et ole lisännyt vielä yhtään retkikohdetta.</p>
+  {% else %}
+    <p>Käyttäjä ei ole vielä lisännyt yhtään retkikohdetta.</p>
+  {% endif %}
 
 {% else %}
-  <p>Käyttäjä on lisännyt {{ user_destinations | count }} kohdetta.</p>
-  <hr />
-  <h3>Käyttäjän lisäämät retkikohteet</h3>
-  <ul>
-    {% for destination in user_destinations %}
-      <li>
-        <a href="/destination/{{ destination.id }}">
-          {{ destination.title }}
-        </a>
-      </li>
+  {% if session.user_id == user.id%}
+    <p>
+      Olet lisännyt {{ user_destinations | count }} kohdetta ja
+      {{ user_comments | count }} kommenttia.
+    </p>
+    <hr />
+    <h3>Omat retkikohteesi</h3>
+
+  {% else %}
+    <p>Käyttäjä on lisännyt {{ user_destinations | count }} kohdetta.</p>
+    <hr />
+    <h3>Käyttäjän lisäämät retkikohteet</h3>
+  {% endif %}
+
+  {% for destination in user_destinations %}
+  <div class="destination">
+    <p>
+      <a href="/destination/{{ destination.id }}">
+          {{ destination.title }}</a>
+      {{ destination.creation_time }}
+    </p>
+  </div>
+  {% endfor %}
+
+  {% if session.user_id == user.id%}
+    <hr />
+    <h3>Omat kommenttisi</h3>
+    {% for comment in user_comments %}
+      <div class="comment">
+        <p>
+          <a href="/destination/{{ comment.destination_id }}#{{ comment.comment_id }}">
+            {{ comment.title }}</a>
+          {{ comment.sent_at }}
+        </p>
+      </div>
     {% endfor %}
-  </ul>
+  {% endif %}
+
 {% endif %}
 
 {% endblock %}

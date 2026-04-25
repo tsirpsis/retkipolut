@@ -33,5 +33,19 @@ def get_destinations(user_id):
     sql = """SELECT id,
                     title,
                     strftime('%d.%m.%Y', creation_time) AS creation_time
-                    FROM destinations WHERE user_id = ?"""
+            FROM destinations WHERE user_id = ?
+            ORDER BY id DESC"""
+    return db.query(sql, [user_id])
+
+def get_comments(user_id):
+    sql = """SELECT u.id AS user_id,
+                    c.id AS comment_id,
+                    c.destination_id,
+                    strftime('%d.%m.%Y %H:%M', c.sent_at) AS sent_at,
+                    d.title
+            FROM users u
+            JOIN comments c ON u.id = c.user_id
+            JOIN destinations d ON c.destination_id = d.id
+            WHERE u.id = ?
+            ORDER BY c.sent_at DESC"""
     return db.query(sql, [user_id])

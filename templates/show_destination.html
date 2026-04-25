@@ -42,13 +42,14 @@
       {{ destination.title }}"/>
   {% endfor %}
 {% else %}
-  <p>Käyttäjä ei ole lisännyt kuvia kohteesta.</p>
+  <p>Kohteesta ei ole vielä kuvia.</p>
 {% endif %}
 
 <h3>Kohteen kommentit</h3>
 {% if comments %}
   {% for comment in comments %}
-    <p><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a>
+    <p id="{{ comment.id }}"><a href="/user/{{ comment.user_id }}">
+      {{ comment.username }}</a>
       ({{ comment.sent_at }}):</p>
     <p>{{ comment.content | show_lines }}</p>
   <hr />

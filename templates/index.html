@@ -9,7 +9,10 @@
   <div class="destination">
     <p>
       <a href="/destination/{{ destination.id }}">
-        {{ destination.title }}</a> <br />
+        {{ destination.title }}</a><br />
+      Kirjoittanut
+      <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
+      {{ destination.creation_time }}
     </p>
   </div>
 {% endfor %}

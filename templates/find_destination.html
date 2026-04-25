@@ -22,16 +22,16 @@
 {% if query %}
   <hr />
   <h3>Hakutulokset</h3>
-  <ul>
-    {% for destination in results %}
-      <li>
+
+  {% for destination in results %}
+    <div class="destination">
+      <p>
         <a href="/destination/{{ destination.id }}">
-          {{ destination.title }}
-        </a>
-        <br />
-      </li>
-    {% endfor %}
-  </ul>
+        {{ destination.title }}</a>
+      </p>
+    </div>
+  {% endfor %}
+
   {% if results|length == 0 %}
     <p>Hakusanalla ei löytynyt kohteita.</p>
   {% endif %}

@@ -13,7 +13,16 @@ def add_destination(title, content, user_id, classes):
     return destination_id
 
 def get_destinations():
-    sql = "SELECT id, title FROM destinations ORDER BY title"
+    sql = """SELECT d.id,
+                    d.title,
+                    strftime('%d.%m.%Y', d.creation_time)
+                    AS creation_time,
+                    d.user_id,
+                    u.id AS user_id,
+                    u.username
+            FROM destinations d
+            JOIN users u ON d.user_id = u.id
+            ORDER BY d.id DESC"""
     return db.query(sql)
 
 def get_destination(destination_id):

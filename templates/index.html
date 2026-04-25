@@ -5,10 +5,13 @@
 {% block content %}
 
 <h2>Retkikohteet</h2>
-<ul>
-  {% for destination in destinations %}
-    <li><a href="/destination/{{ destination.id }}">{{ destination.title }}</a></li>
-  {% endfor %}
-</ul>
+{% for destination in destinations %}
+  <div class="destination">
+    <p>
+      <a href="/destination/{{ destination.id }}">
+        {{ destination.title }}</a> <br />
+    </p>
+  </div>
+{% endfor %}
 
 {% endblock %}

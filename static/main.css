@@ -5,3 +5,31 @@ body {
   background-color: peachpuff;
   padding: 1em;
 }
+
+.header {
+    margin: 0.5em 0;
+    padding: 1em;
+    background-color: goldenrod;
+}
+
+.nav {
+    margin: 0.5em 0;
+    padding: 0.5em;
+    background-color: burlywood;
+}
+
+.content {
+    margin: 0.5em 0;
+    padding: 1em;
+    background-color:bisque;
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+.destination {
+    margin: 1em;
+    padding: 0.2em 0.5em;
+    border: 1px solid black;
+}

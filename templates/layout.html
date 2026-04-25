@@ -8,33 +8,37 @@
 </head>
 
 <body>
-  <h1>Retkipolkut</h1>
+  <div class="header">
+    <h1>Retkipolut</h1>
+  </div>
 
-  {% if session.user_id %}
-    <p>
-      Olet kirjautunut nimellä <a href="/user/{{ session.user_id }}">{{ session.username }}</a>.
-    </p>
-  {% endif %}
-
-  <p>
-    <a href="/">Etusivulle</a> |
-    <a href="/find_destination">Etsi retkikohdetta</a> |
+  <div class="nav">
     {% if session.user_id %}
-      <a href="/new_destination">Lisää uusi retkikohde</a> |
-      <a href="/logout">Kirjaudu ulos</a>
-    {% else %}
-      <a href="/login">Kirjaudu sisään</a> |
-      <a href="/register">Rekisteröidy</a>
+      <p>
+        Olet kirjautunut nimellä <a href="/user/{{ session.user_id }}">{{ session.username }}</a>.
+      </p>
     {% endif %}
-  </p>
+
+    <p>
+      <a href="/">Etusivulle</a> |
+      <a href="/find_destination">Etsi retkikohdetta</a> |
+      {% if session.user_id %}
+        <a href="/new_destination">Lisää uusi retkikohde</a> |
+        <a href="/logout">Kirjaudu ulos</a>
+      {% else %}
+        <a href="/login">Kirjaudu sisään</a> |
+        <a href="/register">Rekisteröidy</a>
+      {% endif %}
+    </p>
+  </div>
 
   {% for message in get_flashed_messages() %}
-    <p>
       <b>{{ message }}</b>
-    </p>
   {% endfor %}
 
-  {% block content %}{% endblock %}
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
 
 </body>
 

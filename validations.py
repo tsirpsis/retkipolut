@@ -1,5 +1,5 @@
 def check_destination(title, content):
-    if not title or len(title) > 50 or len(content) > 1000:
+    if not title or len(title) > 50 or len(content) > 2000:
         return False
     return True
 
@@ -22,7 +22,7 @@ def check_classes(entries, all_classes):
     return classes
 
 def check_comment(content):
-    if len(content) > 500 or len(content) < 1:
+    if len(content) > 1000 or len(content) < 1:
         return False
     return True
 

@@ -14,7 +14,8 @@
   </p>
   <p>
     Kohteen kuvaus <br />
-    <textarea name="description" rows="5" cols="60" maxlength="1000">{{ destination.content }}</textarea>
+    <textarea name="description" rows="5" cols="60" maxlength="2000"
+      required>{{ destination.content }}</textarea>
   </p>
   <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
 

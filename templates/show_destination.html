@@ -9,7 +9,7 @@
 <p>
   Kohteen lisäsi käyttäjä
   <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
-  {{ destination.creation_time }}.
+    {{ destination.creation_time }}.
 </p>
 {% if session.user_id == destination.user_id %}
   <p>
@@ -38,7 +38,8 @@
 <h3>Kuvia kohteesta</h3>
 {% if images %}
   {% for image in images %}
-    <img src="/image/{{ image.id }}" alt="Kuva kohteesta {{ destination.title }}"/>
+    <img src="/image/{{ image.id }}" alt="Kuva kohteesta
+      {{ destination.title }}"/>
   {% endfor %}
 {% else %}
   <p>Käyttäjä ei ole lisännyt kuvia kohteesta.</p>
@@ -47,7 +48,8 @@
 <h3>Kohteen kommentit</h3>
 {% if comments %}
   {% for comment in comments %}
-    <p><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a> ({{ comment.sent_at }}):</p>
+    <p><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a>
+      ({{ comment.sent_at }}):</p>
     <p>{{ comment.content | show_lines }}</p>
   <hr />
   {% endfor %}
@@ -60,7 +62,8 @@
   <form action="/create_comment" method="post">
     <p>
       Viesti: <br />
-      <textarea name="content" rows="5" cols="60" maxlength="1000"></textarea>
+      <textarea name="content" rows="6" cols="60" maxlength="1000"
+        required></textarea>
     </p>
     <input type="hidden" name="destination_id"
       value="{{ destination.id }}"/>

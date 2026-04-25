@@ -139,7 +139,8 @@ def show_destination(destination_id):
     images = destinations.get_images(destination_id)
 
     return render_template("show_destination.html",
-                           destination=destination,classes=classes,comments=comments, images=images)
+                           destination=destination, classes=classes,
+                           comments=comments, images=images)
 
 @app.route("/edit_destination/<int:destination_id>")
 def edit_destination(destination_id):

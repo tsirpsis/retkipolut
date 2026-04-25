@@ -30,5 +30,7 @@
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"/>
   <input type="submit" value="Tallenna"/>
 </form>
-
+<p>
+  <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
+</p>
 {% endblock %}

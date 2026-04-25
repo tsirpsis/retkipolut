@@ -24,5 +24,7 @@
   </p>
   <input type="submit" value="Luo tunnus"/>
 </form>
-
+<p>
+  <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
+</p>
 {% endblock %}

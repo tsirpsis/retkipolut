@@ -14,5 +14,7 @@
   <input type="submit" name="remove" value="Kyllä, poista kohde"/>
   <input type="submit" name="back" value="Ei, palaa takaisin"/>
 </form>
-
+<p>
+  <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
+</p>
 {% endblock %}

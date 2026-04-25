@@ -53,5 +53,7 @@
   {% endif %}
 
 {% endif %}
-
+<p>
+  <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
+</p>
 {% endblock %}

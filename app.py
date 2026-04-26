@@ -42,19 +42,19 @@ def create():
     password2 = request.form["password2"]
 
     if password1 != password2:
-        flash("VIRHE: Antamasi salasanat eivät täsmää, anna salasanat uudelleen.")
+        flash("VIRHE: Antamasi salasanat eivät täsmää. Anna salasanat uudelleen.","error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 
     if not validations.check_registration(username, password1):
-        flash("Käyttäjätunnus tai salasana on liian lyhyt.")
+        flash("VIRHE: Käyttäjätunnus tai salasana on liian lyhyt.", "error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 
     if users.create_user(username, password1):
-        flash("Tunnus luotu onnistuneesti! Kirjaudu vielä sisään.")
+        flash("Tunnus luotu onnistuneesti! Voit nyt kirjautua sisään.", "success")
         return redirect("/login")
-    flash("VIRHE: Käyttäjätunnus on jo varattu. Valitse toinen tunnus.")
+    flash("VIRHE: Käyttäjätunnus on jo varattu. Valitse toinen tunnus.", "error")
     return redirect("/register")
 
 @app.route("/login", methods=["GET","POST"])
@@ -77,7 +77,7 @@ def login():
                 return redirect("/")
             return redirect(next_page)
 
-        flash("VIRHE: Väärä käyttäjätunnus tai salasana.")
+        flash("VIRHE: Väärä käyttäjätunnus tai salasana.", "error")
         filled = {"username": username}
         return render_template("login.html", filled=filled,  next_page=next_page)
 
@@ -126,7 +126,7 @@ def create_destination():
     classes = validations.check_classes(entries, all_classes)
     if classes == [] or classes:
         destination_id = destinations.add_destination(title, content, user_id, classes)
-        flash("Uusi retkikohde lisätty onnistuneesti!")
+        flash("Uusi retkikohde lisätty onnistuneesti!", "success")
         return redirect("/destination/" + str(destination_id))
     errors.forbidden()
 
@@ -189,7 +189,7 @@ def update_destination():
     classes = validations.check_classes(entries, all_classes)
     if classes == [] or classes:
         destinations.update_destination(destination_id, title, content, classes)
-        flash("Retkikohde päivitetty onnistuneesti!")
+        flash("Retkikohde päivitetty onnistuneesti!", "success")
         return redirect("/destination/" + str(destination_id))
     errors.forbidden()
 
@@ -210,7 +210,7 @@ def remove_destination(destination_id):
         check_csrf()
         if "remove" in request.form:
             destinations.remove_destination(destination_id)
-            flash("Retkikohde poistettu onnistuneesti!")
+            flash("Retkikohde poistettu onnistuneesti!", "success")
             return redirect("/")
         return redirect("/destination/" + str(destination_id))
 
@@ -245,7 +245,6 @@ def create_comment():
         errors.forbidden()
 
     destinations.add_comment(content, user_id, destination_id)
-    flash("Uusi kommentti lisätty onnistuneesti!")
     return redirect("/destination/" + str(destination_id))
 
 @app.route("/edit_comment/<int:comment_id>")
@@ -281,7 +280,7 @@ def update_comment():
         errors.forbidden()
 
     users.update_comment(comment_id, content)
-    flash("Kommentti päivitetty onnistuneesti!")
+    flash("Kommentti päivitetty onnistuneesti!", "success")
     return redirect("/destination/" + str(destination_id))
 
 @app.route("/images/<int:destination_id>")
@@ -316,17 +315,15 @@ def add_image():
     image = file.read()
 
     if not validations.check_image_type(image_type):
-        flash("VIRHE: väärä tiedostomuoto, vain .jpg tai .png käy.")
+        flash("VIRHE: Väärä tiedostomuoto. Tiedostomuodon tulee olla .jpg tai .png.", "error")
         return redirect("/images/" + str(destination_id))
-
 
     if not validations.check_image_size(image):
-        flash("VIRHE: liian suuri kuva. Maksimikoko on 500 KB.")
+        flash("VIRHE: Liian suuri kuva. Kuvan maksimikoon tulee olla 500 KB.", "error")
         return redirect("/images/" + str(destination_id))
 
-
     destinations.add_image(image, image_type, destination_id)
-    flash("Uusi kuva lisätty onnistuneesti!")
+    flash("Uusi kuva lisätty onnistuneesti!", "success")
     return redirect("/destination/" + str(destination_id))
 
 @app.route("/image/<int:image_id>")
@@ -360,5 +357,5 @@ def remove_images():
     for image_id in request.form.getlist("image_id"):
         destinations.remove_image(image_id, destination_id)
 
-    flash("Kuva(t) poistettu onnistuneesti!")
+    flash("Kuva(t) poistettu onnistuneesti!", "success")
     return redirect("/images/" + str(destination_id))

@@ -27,8 +27,12 @@
     </p>
   </div>
 
-  {% for message in get_flashed_messages() %}
-      <b>{{ message }}</b>
+  {% for message in get_flashed_messages(with_categories=True) %}
+    {% if message[0] == "error" %}
+      <div class="error"><b>{{ message[1] }}</b></div>
+    {% elif message[0] == "success" %}
+      <div class="success">{{ message[1] }}</div>
+    {% endif %}
   {% endfor %}
 
   <div class="content">

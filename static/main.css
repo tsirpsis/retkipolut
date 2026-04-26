@@ -7,35 +7,49 @@ body {
 }
 
 .header {
-    margin: 0.5em 0;
-    padding: 1em;
-    background-color: goldenrod;
+  margin: 0.5em 0;
+  padding: 1em;
+  background-color: goldenrod;
 }
 
 .nav {
-    margin: 0.5em 0;
-    padding: 0.5em;
-    background-color: burlywood;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  background-color: burlywood;
 }
 
 .content {
-    margin: 0.5em 0;
-    padding: 1em;
-    background-color:bisque;
+  margin: 0.5em 0;
+  padding: 1em;
+  background-color:bisque;
 }
 
 h1, h2 {
-    margin: 0;
+  margin: 0;
 }
 
 .destination {
-    margin: 1em;
-    padding: 0 0.5em;
-    border: 1px solid black;
+  margin: 1em;
+  padding: 0 0.5em;
+  border: 1px solid black;
 }
 
 .comment {
-    margin: 1em;
-    padding: 0 0.5em;
-    border: 1px solid black;
+  margin: 1em;
+  padding: 0 0.5em;
+  border: 1px solid black;
+}
+
+.success {
+  border: 3px solid black;
+  margin: 1em;
+  padding: 0.5em;
+  background-color:khaki;
+}
+
+.error {
+  border: 3px solid black;
+  margin: 1em;
+  padding: 0.5em;
+  background-color:coral;
 }

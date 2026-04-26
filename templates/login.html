@@ -9,11 +9,11 @@
   <form action="/login" method="post">
     <p>
       Tunnus: <br />
-      <input type="text" name="username" value="{{ filled.username }}"/>
+      <input type="text" name="username" value="{{ filled.username }}" required/>
     </p>
     <p>
       Salasana: <br />
-      <input type="password" name="password"/>
+      <input type="password" name="password" required/>
     </p>
     <input type="submit" value="Kirjaudu"/>
     {% if next_page %}

@@ -354,7 +354,13 @@ def remove_images():
     if destination["user_id"] != session["user_id"]:
         errors.forbidden()
 
-    for image_id in request.form.getlist("image_id"):
+    image_ids = request.form.getlist("image_id")
+
+    if not image_ids:
+        flash("VIRHE: Et ole valinnut yhtään kuvaa poistettavaksi.", "error")
+        return redirect("/images/" + str(destination_id))
+
+    for image_id in image_ids:
         destinations.remove_image(image_id, destination_id)
 
     flash("Kuva(t) poistettu onnistuneesti!", "success")

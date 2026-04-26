@@ -23,6 +23,11 @@
       <input type="hidden" name="next_page" value="/"/>
     {% endif %}
   </form>
+{% else %}
+  <p>
+    Olet kirjautunut sisään nimellä {{ session.username }}.
+  </p>
+
 {% endif %}
 <p>
   <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>

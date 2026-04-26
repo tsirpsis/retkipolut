@@ -23,6 +23,12 @@
   <hr />
   <h3>Hakutulokset</h3>
 
+  {% if count == 0 %}
+    <p>Hakusanalla ei löytynyt kohteita.</p>
+  {% else %}
+    <p>Hakusanalla löytyi {{ count }} kohdetta.</p>
+  {% endif %}
+
   {% for destination in results %}
     <div class="destination">
       <p>
@@ -32,9 +38,6 @@
     </div>
   {% endfor %}
 
-  {% if results|length == 0 %}
-    <p>Hakusanalla ei löytynyt kohteita.</p>
-  {% endif %}
 {% endif %}
 
 {% endblock %}

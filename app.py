@@ -218,11 +218,13 @@ def remove_destination(destination_id):
 def find_destination():
     query = request.args.get("query")
     if query:
-        results = destinations.find_destinations(query)
+        results, count = destinations.find_destinations(query)
     else:
         query = ""
         results = []
-    return render_template("find_destination.html", query=query, results=results)
+        count = 0
+    return render_template("find_destination.html", query=query,
+                           results=results, count=count)
 
 @app.route("/create_comment", methods=["POST"])
 def create_comment():

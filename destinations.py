@@ -62,7 +62,10 @@ def find_destinations(query):
                 FROM destinations
                 WHERE title LIKE ? OR content LIKE ?
                 ORDER BY id DESC"""
-    return db.query(sql, ["%" + query + "%", "%" + query + "%"])
+
+    results = db.query(sql, ["%" + query + "%", "%" + query + "%"])
+    count = len(results)
+    return results, count
 
 def get_classes(destination_id):
     sql = """SELECT title, value

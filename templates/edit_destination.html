@@ -8,21 +8,21 @@
 
 <form action="/update_destination" method="post">
   <p>
-    Retkikohteen nimi <br />
-    <input type="text" name="title" value="{{ destination.title }}"
+    <label for="title">Retkikohteen nimi</label> <br />
+    <input type="text" name="title" id="title" value="{{ destination.title }}"
       maxlength="50" required/>
   </p>
   <p>
-    Kohteen kuvaus <br />
-    <textarea name="description" rows="5" cols="60" maxlength="2000"
-      required>{{ destination.content }}</textarea>
+    <label for="description">Kohteen kuvaus</label> <br />
+    <textarea name="description" id="description" rows="5" cols="60"
+      maxlength="2000" required>{{ destination.content }}</textarea>
   </p>
   <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
 
   {% for class in all_classes %}
   <p>
-    {{ class }} <br />
-    <select name="classes">
+    <label for="class{{ class }}">{{ class }}</label> <br />
+    <select name="classes" id="class{{ class }}">
     <option value="">(Valitse)</option>
     {% for option in all_classes[class] %}
       {% if classes[class] == option %}

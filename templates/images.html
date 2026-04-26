@@ -13,7 +13,8 @@
 
   <form action="/add_image" method="post" enctype="multipart/form-data">
     <p>
-      Valitse kuva: <input type="file" name="image" accept=".jpg, .png" />
+      <label for="image">Valitse kuva</label>:
+      <input type="file" name="image" id="image" accept=".jpg, .png" />
       <input type="hidden" name="destination_id" value="{{ destination.id }}"/>
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <input type="submit" value="Lisää kuva"/>

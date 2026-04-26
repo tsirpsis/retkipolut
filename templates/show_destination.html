@@ -69,8 +69,8 @@
   <h3>Lisää uusi kommentti</h3>
   <form action="/create_comment" method="post">
     <p>
-      Viesti: <br />
-      <textarea name="content" rows="6" cols="60" maxlength="1000"
+      <label for="content">Viesti</label>: <br />
+      <textarea name="content" id="content" rows="6" cols="60" maxlength="1000"
         required></textarea>
     </p>
     <input type="hidden" name="destination_id"

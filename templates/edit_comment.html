@@ -13,9 +13,9 @@
 {% if session.user_id == comment.user_id %}
    <form action="/update_comment" method="post">
     <p>
-      Viesti: <br />
-      <textarea name="content" rows="6" cols="60" maxlength="1000" 
-        required>{{ comment.content }}</textarea>
+      <label for="content">Viesti:</label> <br />
+      <textarea name="content" id="content" rows="6" cols="60"
+        maxlength="1000" required>{{ comment.content }}</textarea>
     </p>
     <input type="hidden" name="comment_id" value="{{ comment.id }}"/>
     <input type="hidden" name="destination_id" value="{{ comment.destination_id }}"/>

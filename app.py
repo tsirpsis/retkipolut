@@ -47,7 +47,7 @@ def create():
         return render_template("register.html", filled=filled)
 
     if not validations.check_registration(username, password1):
-        flash("VIRHE: Käyttäjätunnus tai salasana on liian lyhyt.", "error")
+        flash("VIRHE: Käyttäjätunnus tai salasana on liian lyhyt tai pitkä.", "error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 

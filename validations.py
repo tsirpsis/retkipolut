@@ -4,7 +4,7 @@ def check_destination(title, content):
     return True
 
 def check_registration(username, password):
-    if len(username) < 5 or len(password) < 8:
+    if len(username) < 5 or len(username) > 25 or len(password) < 8 or len(password) > 30:
         return False
     return True
 

@@ -4,29 +4,39 @@
 
 {% block content %}
 
-<form action="/create" method="post">
-  <h2>Luo uusi tunnus</h2>
+<h2>Luo uusi tunnus</h2>
+{% if not session.user_id %}
+  <form action="/create" method="post">
+    <p>
+      Käyttäjätunnuksessa on oltava vähintään viisi ja salasanassa vähintään kahdeksan merkkiä.
+    </p>
+
+    <p>
+      <label for="username">Tunnus</label>: <br />
+      <input type="text" name="username" id="username"
+        minlength="5" maxlength="25" value="{{ filled.username }}" required/>
+    </p>
+    <p>
+      <label for="password1">Salasana</label>: <br />
+      <input type="password" name="password1" id="password1"
+        minlength="8" maxlength="30" required/>
+    </p>
+    <p>
+      <label for="password2">Salasana uudestaan</label>: <br />
+      <input type="password" name="password2" id="password2"
+        minlength="8" maxlength="30" required/>
+    </p>
+    <input type="submit" value="Luo tunnus"/>
+  </form>
+
+{% else %}
   <p>
-    Käyttäjätunnuksessa on oltava vähintään viisi ja salasanassa vähintään kahdeksan merkkiä.
+    Olet kirjautunut sisään tunnuksella <b>{{ session.username }}</b>. <br />
+    Jos haluat luoda uuden tunnuksen, <a href="/logout">kirjaudu ensin ulos</a>.
   </p>
 
-  <p>
-    <label for="username">Tunnus</label>: <br />
-    <input type="text" name="username" id="username"
-      minlength="5" maxlength="25" value="{{ filled.username }}" required/>
-  </p>
-  <p>
-    <label for="password1">Salasana</label>: <br />
-    <input type="password" name="password1" id="password1"
-      minlength="8" maxlength="30" required/>
-  </p>
-  <p>
-    <label for="password2">Salasana uudestaan</label>: <br />
-    <input type="password" name="password2" id="password2"
-      minlength="8" maxlength="30" required/>
-  </p>
-  <input type="submit" value="Luo tunnus"/>
-</form>
+{% endif %}
+
 <p>
   <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
 </p>

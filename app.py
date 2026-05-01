@@ -29,7 +29,8 @@ def show_lines(content):
 @app.route("/")
 def index():
     all_destinations = destinations.get_destinations()
-    return render_template("index.html", destinations=all_destinations)
+    return render_template("index.html",
+                           destinations=all_destinations)
 
 @app.route("/register")
 def register():

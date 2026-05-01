@@ -19,9 +19,12 @@ def get_destinations():
                     AS creation_time,
                     d.user_id,
                     u.id AS user_id,
-                    u.username
+                    u.username,
+                    GROUP_CONCAT(dc.title || ': ' || dc.value, ', ') AS classes
             FROM destinations d
             JOIN users u ON d.user_id = u.id
+            LEFT JOIN destination_classes dc ON d.id = dc.destination_id
+            GROUP BY d.id
             ORDER BY d.id DESC"""
     return db.query(sql)
 

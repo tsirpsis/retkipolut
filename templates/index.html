@@ -12,7 +12,10 @@
         {{ destination.title }}</a><br />
       Kirjoittanut
       <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
-      {{ destination.creation_time }}
+      {{ destination.creation_time }} <br />
+      {% if destination.classes %}
+        {{ destination.classes }}
+      {% endif %}
     </p>
   </div>
 {% endfor %}

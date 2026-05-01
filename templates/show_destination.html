@@ -5,29 +5,21 @@
 {% block content %}
 
 <h2>{{ destination.title }}</h2>
-
 <p>
-  Kohteen lisäsi käyttäjä
-  <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
+  Lisännyt <a href="/user/{{ destination.user_id }}">
+    {{ destination.username }}</a>
     {{ destination.creation_time }}.
 </p>
+
 {% if session.user_id == destination.user_id %}
   <p>
-    <a href="/edit_destination/{{ destination.id }}">Muokkaa</a> |
-    <a href="/remove_destination/{{ destination.id }}">Poista</a> |
-    <a href="/images/{{ destination.id }}">Hallinnoi kuvia</a>
-  </p>
+    Voit
+    <a href="/edit_destination/{{ destination.id }}">muokata</a> lisäämäsi kohteen tietoja, hallinnoida sen
+    <a href="/images/{{ destination.id }}">kuvia</a> tai
+    <a href="/remove_destination/{{ destination.id }}">poistaa</a> kohteen.
 {% endif %}
 
-<h3>Kuvaus kohteesta</h3>
-  {% if destination.content %}
-    <p>{{ destination.content | show_lines}}</p>
-  {% else %}
-    <p>Käyttäjä ei ole lisännyt kohteelle kuvausta.</p>
-  {% endif %}
-
 {% if classes %}
-  <h3>Retkipolun luokittelu</h3>
   <ul>
     {% for class in classes %}
       <li>{{ class.title }}: {{ class.value }}</li>
@@ -35,17 +27,20 @@
   </ul>
 {% endif %}
 
+<h3>Retkipolun kuvaus</h3>
+<p>{{ destination.content | show_lines}}</p>
+
 <h3>Kuvia kohteesta</h3>
 {% if images %}
   {% for image in images %}
     <img src="/image/{{ image.id }}" alt="Kuva kohteesta
-      {{ destination.title }}"/>
+      {{ destination.title }}"/> <br />
   {% endfor %}
 {% else %}
   <p>Kohteesta ei ole vielä kuvia.</p>
 {% endif %}
 
-<h3>Kohteen kommentit</h3>
+<h3>Kommentit</h3>
 {% if comments %}
   {% for comment in comments %}
     <p id="{{ comment.id }}"><a href="/user/{{ comment.user_id }}">
@@ -55,12 +50,10 @@
       {% if session.user_id == comment.user_id %}
         <a href="/edit_comment/{{ comment.id }}">Muokkaa</a>
       {% endif %}
-
     </p>
     <p>{{ comment.content | show_lines }}</p>
   <hr />
   {% endfor %}
-
 {% else %}
   <p>Kohteella ei ole vielä kommentteja.</p>
 {% endif %}
@@ -79,6 +72,7 @@
     <input type="submit" value="Lähetä"/>
   </form>
 {% endif %}
+
 <p>
   <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
 </p>

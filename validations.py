@@ -1,5 +1,5 @@
 def check_destination(title, content):
-    if not title or len(title) > 50 or len(content) > 2000:
+    if not title or len(title) > 50 or not content or len(content) > 2000:
         return False
     return True
 

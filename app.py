@@ -74,7 +74,7 @@ def login():
             session["user_id"] = user_id
             session["csrf_token"] = secrets.token_hex(16)
 
-            if "register" in next_page:
+            if "register" in next_page or "create" in next_page:
                 return redirect("/")
             return redirect(next_page)
 

@@ -5,19 +5,26 @@
 {% block content %}
 
 <h2>Retkikohteet</h2>
-{% for destination in destinations %}
-  <div class="destination">
-    <p>
-      <a href="/destination/{{ destination.id }}">
-        {{ destination.title }}</a><br />
-      Kirjoittanut
-      <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
-      {{ destination.creation_time }} <br />
-      {% if destination.classes %}
-        {{ destination.classes }}
-      {% endif %}
-    </p>
-  </div>
-{% endfor %}
+{% if destinations %}
+  {% for destination in destinations %}
+    <div class="destination">
+      <p>
+        <a href="/destination/{{ destination.id }}">
+          {{ destination.title }}</a><br />
+        Kirjoittanut
+        <a href="/user/{{ destination.user_id }}">{{ destination.username }}</a>
+        {{ destination.creation_time }} <br />
+        {% if destination.classes %}
+          {{ destination.classes }}
+        {% endif %}
+      </p>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Sovellukseen ei ole vielä lisätty retkikohteita.</p>
+  {% if not session.user_id %}
+  <p>Kirjaudu sisään tai rekisteröidy lisätäksesi kohteen.</p>
+  {% endif %}
+{% endif %}
 
 {% endblock %}

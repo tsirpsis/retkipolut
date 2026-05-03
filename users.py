@@ -63,6 +63,6 @@ def get_comment(comment_id):
 
 def update_comment(comment_id, content):
     sql = """UPDATE comments
-                SET content = ?
-                WHERE id = ?"""
+            SET content = ?
+            WHERE id = ?"""
     db.execute(sql, [content, comment_id])

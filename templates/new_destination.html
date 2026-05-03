@@ -17,15 +17,15 @@
   </p>
 
   {% for class in classes %}
-  <p>
-    <label for="class{{ class }}">{{ class }}</label> <br />
-    <select name="classes" id="class{{ class }}">
-    <option value="">(Valitse)</option>
-    {% for option in classes[class] %}
-      <option value="{{ class }}:{{ option }}">{{ option }}</option>
-    {% endfor %}
-    </select>
-  </p>
+    <p>
+      <label for="class{{ class }}">{{ class }}</label> <br />
+      <select name="classes" id="class{{ class }}">
+      <option value="">(Valitse)</option>
+      {% for option in classes[class] %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endfor %}
+      </select>
+    </p>
   {% endfor %}
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"/>
   <input type="submit" value="Tallenna"/>

@@ -26,12 +26,10 @@
   {% for destination in results %}
     <div class="destination">
       <p>
-        <a href="/destination/{{ destination.id }}">
-        {{ destination.title }}</a>
+        <a href="/destination/{{ destination.id }}">{{ destination.title }}</a>
       </p>
     </div>
   {% endfor %}
-
 {% endif %}
 
 {% endblock %}

@@ -80,7 +80,7 @@ def login():
 
         flash("VIRHE: Väärä käyttäjätunnus tai salasana.", "error")
         filled = {"username": username}
-        return render_template("login.html", filled=filled,  next_page=next_page)
+        return render_template("login.html", filled=filled, next_page=next_page)
 
 @app.route("/logout")
 def logout():

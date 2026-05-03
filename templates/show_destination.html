@@ -13,19 +13,18 @@
 
 {% if session.user_id == destination.user_id %}
   <p>
-    Voit
-    <a href="/edit_destination/{{ destination.id }}">muokata</a> lisäämäsi kohteen tietoja, lisätä tai poistaa
+    Voit <a href="/edit_destination/{{ destination.id }}">muokata</a>
+    lisäämäsi kohteen tietoja, lisätä tai poistaa
     <a href="/images/{{ destination.id }}">kuvia</a> tai
     <a href="/remove_destination/{{ destination.id }}">poistaa</a> kohteen.
+  </p>
 {% endif %}
 
-{% if classes %}
-  <ul>
-    {% for class in classes %}
-      <li>{{ class.title }}: {{ class.value }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
+<ul>
+  {% for class in classes %}
+    <li>{{ class.title }}: {{ class.value }}</li>
+  {% endfor %}
+</ul>
 
 <h3>Retkipolun kuvaus</h3>
 <p>{{ destination.content | show_lines}}</p>
@@ -52,7 +51,7 @@
       {% endif %}
     </p>
     <p>{{ comment.content | show_lines }}</p>
-  <hr />
+    <hr />
   {% endfor %}
 {% else %}
   <p>Kohteella ei ole vielä kommentteja.</p>

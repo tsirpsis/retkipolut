@@ -8,7 +8,14 @@
 
 {% if user_destinations | count == 0 %}
   {% if session.user_id == user.id%}
-    <p>Et ole lisännyt vielä yhtään retkikohdetta.</p>
+    {% if user_comments | count == 0 %}
+      <p>Et ole vielä lisännyt yhtään retkikohdetta tai kommenttia.</p>
+    {% else %}
+      <p>
+        Et ole vielä lisännyt yhtään retkikohdetta.
+        Olet lisännyt {{ user_comments | count }} kommenttia.
+      </p>
+    {% endif %}
   {% else %}
     <p>Käyttäjä ei ole vielä lisännyt yhtään retkikohdetta.</p>
   {% endif %}
@@ -29,15 +36,18 @@
   {% endif %}
 
   {% for destination in user_destinations %}
-  <div class="destination">
-    <p>
-      <a href="/destination/{{ destination.id }}">
-          {{ destination.title }}</a>
-      {{ destination.creation_time }}
-    </p>
-  </div>
+    <div class="destination">
+      <p>
+        <a href="/destination/{{ destination.id }}">
+            {{ destination.title }}</a>
+        {{ destination.creation_time }}
+      </p>
+    </div>
   {% endfor %}
 
+{% endif %}
+
+{% if user_comments %}
   {% if session.user_id == user.id%}
     <hr />
     <h3>Omat kommenttisi</h3>
@@ -51,7 +61,6 @@
       </div>
     {% endfor %}
   {% endif %}
-
 {% endif %}
 <p>
   <a href="{{ request.referrer if request.referrer else '/' }}">Takaisin</a>
